@@ -30,6 +30,6 @@ package se.monaden.automatabuilder;
  */
 public class Main {
     public static void main(String[] args) {
-        // Run app ..
+        System.out.println("Hello World");
     }
 }
