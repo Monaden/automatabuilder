@@ -26,16 +26,9 @@ package main.java.automatabuilder.interfaces;
 import java.util.Set;
 
 /**
- * 
+ *
  * @author Adam Ingmansson
  */
-public interface IAutomaton {
-    public boolean test(); // TODO: Method parameter. String? Custom "word" class?
-    
-    public Set<IState> deltaHat(Set<IState> qs, IWord w);
-    
-    public Set<IState> getStates(); //TODO: Should the states really be a set?
-    public IAlphabet getAlphabet();
-    public Set<IState> getFinalStates();
-    public IState getStartState();
+public interface IAlphabet {
+    public Set<IWord> power(int n); // Gives a set of words with length n
 }
