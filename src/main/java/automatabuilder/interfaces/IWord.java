@@ -23,19 +23,17 @@
  */
 package main.java.automatabuilder.interfaces;
 
-import java.util.Set;
-
 /**
- * 
+ *
  * @author Adam Ingmansson
  */
-public interface IAutomaton {
-    public boolean test(); // TODO: Method parameter. String? Custom "word" class?
+public interface IWord {
+    public ISymbol symbol();
+    public ISymbol a(); //TODO: Shorthand for the one above, needed?
     
-    public Set<IState> deltaHat(Set<IState> qs, IWord w);
+    public IWord rest();
+    public IWord x(); //TODO: Shorthand for the one above, needed?
     
-    public Set<IState> getStates(); //TODO: Should the states really be a set?
-    public IAlphabet getAlphabet();
-    public Set<IState> getFinalStates();
-    public IState getStartState();
+    public boolean isValid(IAlphabet sigma);
+    
 }
