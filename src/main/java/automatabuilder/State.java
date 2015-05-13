@@ -47,14 +47,18 @@ public class State implements IState {
         
         boolean first = true;
         StringBuffer sb = new StringBuffer("(");
-        for (ITransition t : transitions) {
-            sb.append(t.toString());
-            sb.append(", ");
+        if (transitions.isEmpty()) {
+            sb.append(")");
+        } else {
+            for (ITransition t : transitions) {
+                sb.append(t.toString());
+                sb.append(",");
+            }
+            sb.setCharAt(sb.length()-1, ')');
         }
-        sb.setCharAt(sb.length()-1, ')');
         
         
-        return String.format("%s%s:%s", prefix, name, transitions);
+        return String.format("%s%s:%s", prefix, name, sb.toString());
     }
 
     @Override
