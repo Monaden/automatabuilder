@@ -2,6 +2,7 @@ package automatabuilder;
 
 import interfaces.IState;
 import interfaces.ITransition;
+import java.util.Objects;
 
 import java.util.Vector;
 
@@ -54,6 +55,32 @@ public class State implements IState {
         
         
         return String.format("%s%s:%s", prefix, name, transitions);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 23 * hash + (this.isFinal ? 1 : 0);
+        hash = 23 * hash + Objects.hashCode(this.name);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final State other = (State) obj;
+        if (this.isFinal != other.isFinal) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return true;
     }
     
     
