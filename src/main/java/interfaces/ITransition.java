@@ -4,7 +4,7 @@ import automatabuilder.Symbol;
 
 public interface ITransition {
 
-    public ISymbol getSymbol();
+    public Symbol getSymbol();
 
     public IState getTarget();
 
