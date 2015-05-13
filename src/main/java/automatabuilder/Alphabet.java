@@ -11,6 +11,9 @@ public class Alphabet implements IAlphabet {
     protected Set<Symbol> symbols;
     
     public Alphabet (Set<Symbol> symbols){
+        if (symbols == null) {
+            throw new IllegalArgumentException("Symbols cannot be null");
+        }
         this.symbols = symbols;
     }
 

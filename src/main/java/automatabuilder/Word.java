@@ -7,6 +7,10 @@ public class Word implements IWord {
     private Symbol head;
     private IWord tail;
 
+    //TODO not sure how to implement
+    public Word () {
+    }
+
     public String toString() {
         //TODO use string format/or stringbuilder
         return head.toString() + tail.toString();
