@@ -1,20 +1,33 @@
+package main.java.automatabuilder;
+
 import java.util.Vector;
 
 public class Transition implements ITransition {
 
-  protected IState target;
+    protected IState target;
 
-  protected ISymbol symbol;
+    protected ISymbol symbol;
 
-    public IState myIState;
-    /**
-   * 
-   * @element-type Symbol
-   */
-  public Vector  mySymbol;
+    public Transition(IState target, ISymbol symbol) {
+        if (target == null || symbol == null) {
+            throw new IllegalArgumentException("Incorrect transition");
+        }
+        this.target = target;
+        this.symbol = symbol;
+    }
 
-  public String toString() {
-  return null;
-  }
+    
+    
+    public IState getTarget() {
+        return target;
+    }
+
+    public ISymbol getSymbol() {
+        return symbol;
+    }
+    
+    public String toString() {
+        return symbol+"->"+target.getName();
+    }
 
 }
