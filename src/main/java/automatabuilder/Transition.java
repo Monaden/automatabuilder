@@ -1,16 +1,15 @@
 package automatabuilder;
 
 import interfaces.IState;
-import interfaces.ISymbol;
 import interfaces.ITransition;
 
 public class Transition implements ITransition {
 
     protected IState target;
 
-    protected ISymbol symbol;
+    protected Symbol symbol;
 
-    public Transition(IState target, ISymbol symbol) {
+    public Transition(IState target, Symbol symbol) {
         if (target == null || symbol == null) {
             throw new IllegalArgumentException("Incorrect transition");
         }
@@ -21,7 +20,7 @@ public class Transition implements ITransition {
     public IState getTarget() {
         return target;
     }
-    public ISymbol getSymbol() {
+    public Symbol getSymbol() {
         return symbol;
     }
     public String toString() {
