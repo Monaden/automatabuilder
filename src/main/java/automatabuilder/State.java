@@ -3,11 +3,22 @@ package automatabuilder;
 import interfaces.IState;
 import interfaces.ITransition;
 
+import java.util.Vector;
+
 public class State implements IState {
 
     protected java.util.Vector<ITransition> transitions;
-    protected Boolean isFinal;
+    protected boolean isFinal;
     protected String name;
+
+    public State (Vector<ITransition> transitions, boolean isFinal, String name) {
+        if(transitions == null || name.equals("")){
+           throw new IllegalArgumentException("State arguments invalid");
+        }
+        this.transitions = transitions;
+        this.isFinal     = isFinal;
+        this.name        = name;
+    }
 
     public String getName() {
         return name;
