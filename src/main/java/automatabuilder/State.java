@@ -1,7 +1,7 @@
-package main.java.automatabuilder;
+package automatabuilder;
 
-import java.util.Iterator;
-import java.util.Vector;
+import interfaces.IState;
+import interfaces.ITransition;
 
 public class State implements IState {
 
@@ -23,8 +23,12 @@ public class State implements IState {
                 return t.getTarget();
             }
         }
+
+        //TODO fixa return null
+        System.err.println("State missing transition something is wrong");
+        return null;
     }
-    
+
     @Override
     public String toString() {
         String prefix = isFinal ? "*" : "";

@@ -1,6 +1,8 @@
-package main.java.automatabuilder;
+package automatabuilder;
 
-import java.util.Vector;
+import interfaces.IState;
+import interfaces.ISymbol;
+import interfaces.ITransition;
 
 public class Transition implements ITransition {
 
@@ -16,16 +18,12 @@ public class Transition implements ITransition {
         this.symbol = symbol;
     }
 
-    
-    
     public IState getTarget() {
         return target;
     }
-
     public ISymbol getSymbol() {
         return symbol;
     }
-    
     public String toString() {
         return symbol+"->"+target.getName();
     }

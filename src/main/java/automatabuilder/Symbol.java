@@ -1,4 +1,4 @@
-package main.java.automatabuilder
+package automatabuilder;
 
 public class Symbol {
 

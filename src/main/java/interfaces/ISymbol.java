@@ -21,14 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package main.java.automatabuilder.interfaces;
-
-import java.util.Set;
+package interfaces;
 
 /**
  *
  * @author Adam Ingmansson
  */
-public interface IAlphabet {
-    public Set<IWord> power(int n); // Gives a set of words with length n
+public interface ISymbol extends Comparable {
+    
 }
