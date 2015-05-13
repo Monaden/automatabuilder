@@ -1,9 +1,9 @@
+package main.java.automatabuilder
+
 public interface ITransition {
 
-    public State myState;
-  
-  public Symbol getSymbol();
+    public Symbol getSymbol();
 
-  public IState getTarget();
+    public IState getTarget();
 
 }

@@ -1,12 +1,11 @@
+package main.java.automatabuilder
+
 import java.util.Vector;
 
 public interface IAlphabet {
 
-      public Vector  myDFA;
-    public DFA myDFA;
+    public IWord power(int n);
 
-  public IWord power(Integer n);
-
-  public Boolean isValid( IWord);
+    public Boolean isValid(IWord);
 
 }
