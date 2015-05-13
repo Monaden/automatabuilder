@@ -45,7 +45,6 @@ public class State implements IState {
     public String toString() {
         String prefix = isFinal ? "*" : "";
         
-        boolean first = true;
         StringBuffer sb = new StringBuffer("(");
         if (transitions.isEmpty()) {
             sb.append(")");
