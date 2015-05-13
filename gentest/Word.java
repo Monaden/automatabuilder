@@ -1,15 +1,12 @@
-import java.util.Vector;
+package main.java.automatabuilder
 
 public class Word implements IWord {
 
-  public Symbol head;
+    public Symbol head;
+    public IWord tail;
 
-  public IWord tail;
-
-      public Vector  mySymbol;
-
-  public String toString() {
-  return null;
-  }
+    public String toString() {
+        return head + tail;
+     }
 
 }

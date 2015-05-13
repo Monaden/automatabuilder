@@ -1,27 +1,11 @@
-import java.util.Vector;
+package main.java.automatabuilder
 
-public class Symbol implements ISymbol {
+public class Symbol {
 
-  protected String symbol;
+    protected String symbol;
 
-    /**
-   * 
-   * @element-type IWord
-   */
-  public Vector  myIWord;
-    /**
-   * 
-   * @element-type Alphabet
-   */
-  public Vector  myAlphabet;
-      /**
-   * 
-   * @element-type Transition
-   */
-  public Vector  myTransition;
-
-  public String toString() {
-  return null;
-  }
+    public String toString() {
+        return symbol;
+    }
 
 }

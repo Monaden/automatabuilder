@@ -1,14 +1,25 @@
-import java.util.Vector;
+package main.java.automatabuilder
+
+import java.lang.StringBuilder;
+import java.util.Set;
 
 public class Alphabet implements IAlphabet {
 
-  protected java.util.Vector symbols;
+    protected Set<Symbol> symbols;
+    
+    public Alphabet (Set<Symbol> symbols){
+        this.symbols = symbols;
+    }
 
-    public Vector  myISymbol;
-    public Symbol mySymbol;
-
-  public String toString() {
-  return null;
-  }
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append('{')
+        for (Symbol s : symbols){
+            sb.append(s);
+            sb.append(',')
+        }
+        sb.setCharAt(sb.length()-1, '}');
+        return sb.toString();
+    }
 
 }

@@ -1,14 +1,9 @@
-import java.util.Vector;
+package main.java.automatabuilder
 
 public interface IState {
 
-    public DFA myDFA;
-      public Vector  myIAutomaton;
-      public Transition myTransition;
-    public Vector  myITransition;
+    public IState transition(Symbol a);
 
-  public IState transition();
-
-  public String getName();
+    public String getName();
 
 }

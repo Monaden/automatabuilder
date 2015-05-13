@@ -1,15 +1,9 @@
-import java.util.Vector;
+package main.java.automatabuilder
 
 public interface IWord {
 
-    private final IWord myIWord;
-    public ISymbol myISymbol;
-      public Vector  myIAutomaton;
-    public Vector  myISymbol;
-    public Symbol mySymbol;
-  
-  public Symbol head();
+    public Symbol head();
 
-  public IWord tail();
+    public IWord tail();
 
 }
