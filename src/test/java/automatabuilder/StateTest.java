@@ -8,7 +8,8 @@ package automatabuilder;
 import interfaces.IState;
 import interfaces.ITransition;
 import java.util.Vector;
-import org.junit.Test;
+import org.junit.*;
+
 import static org.junit.Assert.*;
 
 /**
@@ -16,83 +17,56 @@ import static org.junit.Assert.*;
  * @author Adam
  */
 public class StateTest {
-    
-    public StateTest() {
+
+    private Vector<ITransition> transitions;
+
+    private IState q0;
+    private IState q1;
+    private Symbol a;
+
+
+    @Before
+    public void setUp() throws Exception {
+        transitions = new Vector<>();
     }
 
-    /**
-     * Test of getName method, of class State.
-     */
-    @org.junit.Test
+    private void buildStateWithOneTransitions(){
+        a = new Symbol("a");
+
+        q0 = new State(transitions, false, "q0");
+        q1 = new State(new Vector(), true, "q1");
+
+        Transition t1 = new Transition(q1, a);
+        transitions.add(t1);
+
+    }
+
+    @Test
     public void testGetName() {
-        System.out.println("getName");
-        Vector<ITransition> ts = new Vector();
-        
-        State instance = new State(ts, true, "q0");
+        State state = new State(transitions, true, "q0");
         String expResult = "q0";
         
-        String result = instance.getName();
-        assertEquals(expResult, result);
+        assertEquals(expResult, state.getName());
     }
 
-    /**
-     * Test of isFinal method, of class State.
-     */
-    @org.junit.Test
+    @Test
     public void testIsFinal() {
-        
-        System.out.println("isFinal");
-        
-        Vector<ITransition> ts = new Vector();
-        
-        State instance = new State(ts, true, "q0");
-        boolean expResult = true;
-        boolean result = instance.isFinal();
-        assertEquals(expResult, result);
+        State state = new State(transitions, true, "q0");
+        assertEquals(true, state.isFinal());
     }
 
-    /**
-     * Test of transition method, of class State.
-     */
-    @org.junit.Test
+    @Test
     public void testTransition() {
-        System.out.println("transition");
-        Symbol a = new Symbol("a");
-        Vector<ITransition> ts = new Vector();
-        
-        State q0 = new State(ts, true, "q0");
-        State q1 = new State(new Vector(), true, "q1");
-        
-        Transition t1 = new Transition(q1, a);
-        ts.add(t1);
-        
+        buildStateWithOneTransitions();
         IState result = q0.transition(a);
         assertEquals(q1, result);
     }
 
-    /**
-     * Test of toString method, of class State.
-     */
-    @org.junit.Test
+    @Test
     public void testToString() {
-        System.out.println("toString");
-        Symbol a = new Symbol("a");
-        Vector<ITransition> ts = new Vector();
-        
-        State q0 = new State(ts, false, "q0");
-        State q1 = new State(new Vector(), true, "q1");
-        
-        Transition t1 = new Transition(q1, a);
-        ts.add(t1);
-        
-        String expResult1 = "q0:(a->q1)";
-        String expResult2 = "*q1:()";
-        String result1 = q0.toString();
-        String result2 = q1.toString();
-        System.out.println(result2);
-        System.out.println(expResult2);
-        assertEquals(expResult1, result1);
-        assertEquals(expResult2, result2);
+        buildStateWithOneTransitions();
+        assertEquals("q0:(a->q1)", q0.toString());
+        assertEquals("*q1:()",q1.toString());
     }
-    
+
 }
