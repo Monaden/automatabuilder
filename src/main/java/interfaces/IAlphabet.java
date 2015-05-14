@@ -1,7 +1,9 @@
 package interfaces;
 
+import java.util.List;
+
 public interface IAlphabet {
-    public IWord power(int n);
+    public List<IWord> power(int n);
     public Boolean isValid(IWord word);
 
     Boolean isValid();

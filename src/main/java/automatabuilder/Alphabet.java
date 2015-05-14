@@ -4,6 +4,7 @@ import interfaces.IAlphabet;
 import interfaces.IWord;
 
 import java.lang.StringBuilder;
+import java.util.List;
 import java.util.Set;
 
 public class Alphabet implements IAlphabet {
@@ -29,7 +30,7 @@ public class Alphabet implements IAlphabet {
     }
 
     @Override
-    public IWord power(int n) {
+    public List<IWord> power(int n) {
         //TODO Implement
         return null;
     }
