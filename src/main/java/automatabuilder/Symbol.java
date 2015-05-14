@@ -1,6 +1,8 @@
 package automatabuilder;
 
-public class Symbol {
+import java.util.Objects;
+
+public class Symbol implements Comparable<Symbol> {
 
     protected String symbol;
 
@@ -13,6 +15,11 @@ public class Symbol {
 
     public String toString() {
         return symbol;
+    }
+
+    @Override
+    public int compareTo(Symbol o) {
+        return Objects.compare(symbol, o.symbol, String.CASE_INSENSITIVE_ORDER);
     }
 
 }
