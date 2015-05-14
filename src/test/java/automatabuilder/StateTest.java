@@ -44,9 +44,7 @@ public class StateTest {
     @Test
     public void testGetName() {
         State state = new State(transitions, true, "q0");
-        String expResult = "q0";
-        
-        assertEquals(expResult, state.getName());
+        assertEquals("q0", state.getName());
     }
 
     @Test
