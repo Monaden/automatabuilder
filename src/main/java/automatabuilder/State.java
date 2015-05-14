@@ -2,16 +2,16 @@ package automatabuilder;
 
 import interfaces.IState;
 import interfaces.ITransition;
+import java.util.List;
 
-import java.util.Vector;
 
 public class State implements IState {
 
-    protected java.util.Vector<ITransition> transitions;
+    protected List<ITransition> transitions;
     protected boolean isFinal;
     protected String name;
 
-    public State (Vector<ITransition> transitions, boolean isFinal, String name) {
+    public State (List<ITransition> transitions, boolean isFinal, String name) {
         if(transitions == null || name.equals("")){
            throw new IllegalArgumentException("State arguments invalid");
         }
