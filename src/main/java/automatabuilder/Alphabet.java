@@ -36,14 +36,8 @@ public class Alphabet implements IAlphabet {
     }
 
     @Override
-    public Boolean isValid(IWord word) {
+    public boolean isValid(IWord word) {
         //TODO implement
-        return null;
-    }
-
-    @Override
-    public Boolean isValid() {
-        //TODO Implpement
-        return null;
+        return false;
     }
 }
