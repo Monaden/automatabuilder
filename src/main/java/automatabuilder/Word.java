@@ -26,9 +26,10 @@ public class Word implements IWord {
     public Word(String word) {
         
         // Remove all whitespace.
-        word = word.replaceAll("\\s+","");
         
         if (word != null && word.length() > 0) {
+            word = word.replaceAll("\\s+","");
+            
             head = new Symbol(word.substring(0, 1));
             if (word.length() > 1) {
                 tail = new Word(word.substring(1));
