@@ -30,7 +30,6 @@ public class AlphabetTest {
      */
     @Test
     public void testToString() {
-        System.out.println("toString");
         String expResult = "{a,b}";
         String result = lang.toString();
         assertEquals(expResult, result);
@@ -41,7 +40,6 @@ public class AlphabetTest {
      */
     @Test
     public void testPower() {
-        System.out.println("power");
         
         int n = 3;
         
@@ -65,14 +63,11 @@ public class AlphabetTest {
      */
     @Test
     public void testIsValid() {
-        System.out.println("isValid");
-        IWord w1 = new Word("aaa");
+        IWord w1 = new Word("aba");
         IWord w2 = new Word("abc");
         
         boolean r1 = lang.isValid(w1);
-        boolean r2 = lang.isValid(w1);
-        System.out.println(r1);
-        System.out.println(r2);
+        boolean r2 = lang.isValid(w2);
         assertTrue(r1);
         assertFalse(r2);
     }

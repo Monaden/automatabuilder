@@ -53,16 +53,10 @@ public class Alphabet implements IAlphabet {
     public boolean isValid(IWord word) {
         //TODO Implement with iterable
         IWord next = word;
-        while (next != null) {
+        while (next != null && next != Word.Empty) {
             Symbol a = next.head();
-            for (Symbol b : symbols) {
-                System.out.printf("%s%n",b);
-                System.out.printf("%s%n",next.head());
-                System.out.printf("%s%n",b.equals(a));
-                System.out.println("---------------");
-                if (b.equals(a)) {
-                    return false;
-                }
+            if (!symbols.contains(a) && a != Symbol.Epsilon) {
+                return false;
             }
             next = next.tail();
         }

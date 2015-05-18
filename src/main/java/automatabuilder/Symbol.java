@@ -28,4 +28,28 @@ public class Symbol implements Comparable<Symbol> {
         return Objects.compare(symbol, o.symbol, String.CASE_INSENSITIVE_ORDER);
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 83 * hash + Objects.hashCode(this.symbol);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        
+        final Symbol other = (Symbol) obj;
+        
+        if (!Objects.equals(this.symbol, other.symbol)) {
+            return false;
+        }
+        return true;
+    }
+
 }

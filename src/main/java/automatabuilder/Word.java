@@ -56,7 +56,7 @@ public class Word implements IWord {
      * @param w Rest of the word
      */
     public Word(Symbol a, IWord w) {
-        this(a + w.toString());
+        this(a + w.toString()); // Ensures deep copy
     }
     
     /**
