@@ -8,27 +8,30 @@ import java.util.Objects;
 
 public class State implements IState {
 
-    protected List<ITransition> transitions;
-    protected boolean isFinal;
-    protected String name;
+    private final List<ITransition> transitions;
+    private final boolean isFinal;
+    private final String name;
 
     public State (List<ITransition> transitions, boolean isFinal, String name) {
-        if(transitions == null || name.equals("")){
-           throw new IllegalArgumentException("State arguments invalid");
+        if(transitions == null || name.isEmpty()){
+           throw new IllegalArgumentException("State arguments invalid.");
         }
         this.transitions = transitions;
         this.isFinal     = isFinal;
         this.name        = name;
     }
 
+    @Override
     public String getName() {
         return name;
     }
     
+    @Override
     public boolean isFinal() {
         return isFinal;
     }
     
+    @Override
     public IState transition(Symbol a) {
         for (ITransition t : transitions) {
             if (t.getSymbol() == a) {
@@ -36,9 +39,7 @@ public class State implements IState {
             }
         }
 
-        //TODO fixa return null
-        System.err.println("State missing transition something is wrong");
-        return null;
+        return DeadState.INSTANCE;
     }
 
     @Override
