@@ -51,6 +51,15 @@ public class Word implements IWord {
     }
     
     /**
+     * Copy constructor, with added symbol.
+     * @param a First symbol
+     * @param w Rest of the word
+     */
+    public Word(Symbol a, IWord w) {
+        this(a + w.toString()); // Ensures deep copy
+    }
+    
+    /**
      * Private empty constructor.
      */
     private Word() {
