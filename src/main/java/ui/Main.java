@@ -37,9 +37,4 @@ public class Main {
         CLI cli = new CLI(new File(""));
         cli.start();
     }
-    
-    
-    public static IAutomaton buildAutomata() {
-        return new DFA();
-    }
 }
