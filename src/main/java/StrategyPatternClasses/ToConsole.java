@@ -1,5 +1,6 @@
 package StrategyPatternClasses;
 
+import interfaces.IAutomaton;
 import interfaces.IShowTransitionTable;
 
 /**
@@ -7,6 +8,8 @@ import interfaces.IShowTransitionTable;
  */
 public class ToConsole implements IShowTransitionTable {
 
-    public void showTable(){
+    @Override
+    public void showTable(IAutomaton automaton){
     }
+
 }
