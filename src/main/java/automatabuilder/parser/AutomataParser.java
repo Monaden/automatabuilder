@@ -64,38 +64,47 @@ public class AutomataParser {
         throws AutomataParserException
     {
         Element alphabetElement = getAlphabetElement(docElem);
-        List<Element> symbolElements = getSymbolElements(alphabetElement);
+        List<Element> symbolElements = getElements(alphabetElement, "symbol");
         Set<Symbol> symbols = getSymbols(symbolElements);
         
         alphabet = new Alphabet(symbols);
     }
     
     
-    private static Element getAlphabetElement(Element rootElement) 
+    private static Element getAlphabetElement(Element parent)
         throws AutomataParserException
     {
-        List<Element> elements = getElementsByTag(rootElement, "alphabet");
-        
-        if(elements.size() != 1){
-            throw new AutomataParserException("No or more than one alphabet.");
-        }
-        return elements.get(0);
+        return getElements(parent, "alphabet").get(0);
     }
     
     
-    private static List<Element> getSymbolElements(Element alphabetElement)
+    private static List<Element> getElements(Element parent, String tagName)
         throws AutomataParserException
     {
-        List<Element> symbolElements = getElementsByTag(
-            alphabetElement, 
-            "symbol"
-        );
+        List<Element> elements = getElementsByTag(parent, tagName);
         
-        if(symbolElements.isEmpty()){
-            throw new AutomataParserException("No symbols in alphabet.");
+        if(tagName == "alphabet" ? elements.size() != 1 : elements.isEmpty()){
+            String errorMessage = "";
+            
+            switch(tagName){
+                case "alphabet":
+                    errorMessage = "No or more than one alphabet.";
+                    break;
+                case "symbol":
+                    errorMessage = "No symbols in alphabet.";
+                    break;
+                case "state":
+                    errorMessage = "No states.";
+                    break;
+                case "transition":
+                    errorMessage = "No transitions from state.";
+                default:
+                    
+            }
+            throw new AutomataParserException(errorMessage);
         }
         
-        return symbolElements;
+        return elements;
     }
     
     
@@ -120,21 +129,9 @@ public class AutomataParser {
     private static void parseStates(Element docElem)
         throws AutomataParserException
     {
-        List<Element> stateElements = getStateElements(docElem);
+        List<Element> stateElements = getElements(docElem, "state");
         states = getStates(stateElements);
         parseTransitions(stateElements);
-    }
-    
-    
-    private static List<Element> getStateElements(Element rootElement)
-        throws AutomataParserException
-    {
-        List<Element> elements = getElementsByTag(rootElement, "state");
-        
-        if(elements.isEmpty()){
-            throw new AutomataParserException("No states.");
-        }
-        return elements;
     }
     
     
@@ -168,25 +165,9 @@ public class AutomataParser {
     {
         for(Element e : stateElements){
             String name = e.getAttribute("name");
-            List<Element> transitionElements = getTransitionElements(e);
+            List<Element> transitionElements = getElements(e, "transitions");
             addTransitions(transitionMap.get(name), transitionElements);            
         }
-    }
-    
-    
-    private static List<Element> getTransitionElements(Element stateElement)
-        throws AutomataParserException
-    {
-        List<Element> transitionElements = getElementsByTag(
-            stateElement, 
-            "transition"
-        );
-        
-        if(transitionElements.isEmpty()){
-            throw new AutomataParserException("No transitions from state.");
-        }
-        
-        return transitionElements;
     }
     
     
