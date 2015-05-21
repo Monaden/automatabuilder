@@ -1,5 +1,6 @@
 package StrategyPatternClasses;
 
+import interfaces.IAlphabet;
 import interfaces.IShowDFA;
 import interfaces.IState;
 
@@ -11,12 +12,7 @@ import java.util.List;
 public class ToConsole implements IShowDFA {
 
     @Override
-    public void showTable(List<IState> stateList){
-
-    }
-
-    @Override
-    public void tableToFile(List<IState> stateList, String filename) {
+    public void showTable(List<IState> stateList, IAlphabet alphabet){
 
     }
 
