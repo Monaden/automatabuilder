@@ -1,4 +1,6 @@
 package interfaces;
+import automatabuilder.Alphabet;
+
 import java.util.List;
 
 /**

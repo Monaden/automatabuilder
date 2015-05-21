@@ -1,6 +1,8 @@
 package interfaces;
 
-public interface IAlphabet {
+import automatabuilder.Symbol;
+
+public interface IAlphabet extends Iterable<Symbol>{
     public IWord power(int n);
     public Boolean isValid(IWord word);
 

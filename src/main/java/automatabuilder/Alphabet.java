@@ -4,6 +4,7 @@ import interfaces.IAlphabet;
 import interfaces.IWord;
 
 import java.lang.StringBuilder;
+import java.util.Iterator;
 import java.util.Set;
 
 public class Alphabet implements IAlphabet {
@@ -44,5 +45,10 @@ public class Alphabet implements IAlphabet {
     public Boolean isValid() {
         //TODO Implpement
         return null;
+    }
+
+    @Override
+    public Iterator<Symbol> iterator() {
+        return symbols.iterator();
     }
 }
