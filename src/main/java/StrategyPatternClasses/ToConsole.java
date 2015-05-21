@@ -13,7 +13,6 @@ public class ToConsole implements IShowDFA {
 
     @Override
     public void showTable(List<IState> stateList, IAlphabet alphabet){
-
     }
 
 }
