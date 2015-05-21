@@ -62,4 +62,9 @@ public class Alphabet implements IAlphabet {
         }
         return true;
     }
+
+    @Override
+    public boolean contains(Symbol symbol) {
+        return symbols.contains(symbol);
+    }
 }
