@@ -2,7 +2,6 @@ package automatabuilder;
 
 import interfaces.*;
 
-import java.io.*;
 import java.util.List;
 
 
@@ -14,7 +13,7 @@ public class DFA implements IAutomaton {
 
     protected IState startState;
 
-    protected IShowTransitionTable showTransitionTable;
+    protected IShowDFA outputter;
 
     protected IState delta(IState q, Symbol s) {
         //TODO: Implement
@@ -30,11 +29,6 @@ public class DFA implements IAutomaton {
     public Boolean test(String word) {
         //TODO: Implement
         return null;
-    }
-
-    //TODO add to interface since public
-    public void show(){
-        showTransitionTable.showTable(this);
     }
 
 }

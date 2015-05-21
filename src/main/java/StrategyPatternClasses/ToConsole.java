@@ -1,15 +1,23 @@
 package StrategyPatternClasses;
 
-import interfaces.IAutomaton;
-import interfaces.IShowTransitionTable;
+import interfaces.IShowDFA;
+import interfaces.IState;
+
+import java.util.List;
 
 /**
  * Created by oliv on 5/20/15.
  */
-public class ToConsole implements IShowTransitionTable {
+public class ToConsole implements IShowDFA {
 
     @Override
-    public void showTable(IAutomaton automaton){
+    public void showTable(List<IState> stateList){
+
+    }
+
+    @Override
+    public void tableToFile(List<IState> stateList, String filename) {
+
     }
 
 }
