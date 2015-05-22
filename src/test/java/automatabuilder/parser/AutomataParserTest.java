@@ -17,246 +17,120 @@ public class AutomataParserTest {
     
     public static final String TEST_FILES_DIRECTORY = "TestFilesAutomataParser/";
     
-    @Test
-    public void testOddNrPushAutomata(){  
-        
+
+    private boolean testParseAutomata(String filepath){
         IAutomaton automata = null;
         String errorMessage = null;
         
         try {
-            automata = AutomataParser.parseXmlFile(TEST_FILES_DIRECTORY + "odd_nr_push.xml");
+            automata = AutomataParser.parseXmlFile(TEST_FILES_DIRECTORY + filepath);
         } catch (AutomataParserException ex) {
             errorMessage = ex.toString();
         }
         
-        assertTrue(automata != null);
-        assertTrue(errorMessage == null);
+        return automata != null && errorMessage == null;
+    }
+    
+    
+    private boolean testException(String filepath, String exceptionMessage){
+        IAutomaton automata = null;
+        String errorMessage = null;
+        
+        try {
+            automata = AutomataParser.parseXmlFile(TEST_FILES_DIRECTORY + filepath);
+        } catch (AutomataParserException ex) {
+            errorMessage = ex.toString();
+        }
+        
+        return errorMessage.equals(AutomataParserException.PREFIX + exceptionMessage);
+    }
+    
+    
+    @Test
+    public void testOddNrPushAutomata(){
+        assertTrue(testParseAutomata("odd_nr_push.xml"));
     }
     
     
     @Test
     public void testSubwordAbcAutomata(){
-        
-        IAutomaton automata = null;
-        String errorMessage = null;
-        
-        try {
-            automata = AutomataParser.parseXmlFile(TEST_FILES_DIRECTORY + "subword_abc.xml");
-        } catch (AutomataParserException ex) {
-            errorMessage = ex.toString();
-        }
-        
-        assertTrue(automata != null);
-        assertTrue(errorMessage == null);
+        assertTrue(testParseAutomata("subword_abc.xml"));
     }
-    
     
     @Test
     public void testInvalidState(){
-            
-        IAutomaton automata = null;
-        String errorMessage = null;
-        
-        try {
-            automata = AutomataParser.parseXmlFile(TEST_FILES_DIRECTORY + "invalid_state.xml");
-        } catch (AutomataParserException ex) {
-            errorMessage = ex.toString();
-        }
-        
-        assertTrue(errorMessage.equals(AutomataParserException.PREFIX + "Invalid state."));
+        assertTrue(testException("invalid_state.xml", "Invalid state."));
     }
     
-    
+
     @Test
     public void testInvalidSymbol(){
-            
-        IAutomaton automata = null;
-        String errorMessage = null;
-        
-        try {
-            automata = AutomataParser.parseXmlFile(TEST_FILES_DIRECTORY + "invalid_symbol.xml");
-        } catch (AutomataParserException ex) {
-            errorMessage = ex.toString();
-        }
-        
-        assertTrue(errorMessage.equals(AutomataParserException.PREFIX + "Invalid symbol."));
+        assertTrue(testException("invalid_symbol.xml", "Invalid symbol."));
     }
     
     
     @Test
     public void testInvalidTransition(){
-            
-        IAutomaton automata = null;
-        String errorMessage = null;
-        
-        try {
-            automata = AutomataParser.parseXmlFile(TEST_FILES_DIRECTORY + "invalid_transition.xml");
-        } catch (AutomataParserException ex) {
-            errorMessage = ex.toString();
-        }
-        
-        assertTrue(errorMessage.equals(AutomataParserException.PREFIX + "Invalid transition."));
+        assertTrue(testException("invalid_transition.xml", "Invalid transition."));
     }
     
     
     @Test
     public void testMissingTransition(){
-            
-        IAutomaton automata = null;
-        String errorMessage = null;
-        
-        try {
-            automata = AutomataParser.parseXmlFile(TEST_FILES_DIRECTORY + "missing_transition.xml");
-        } catch (AutomataParserException ex) {
-            errorMessage = ex.toString();
-        }
-        
-        assertTrue(errorMessage.equals(AutomataParserException.PREFIX + "Missing transitions."));
+        assertTrue(testException("missing_transition.xml", "Missing transitions."));
     }
     
     
     @Test
     public void testMultipleTransitionsFromOneSymbol(){
-            
-        IAutomaton automata = null;
-        String errorMessage = null;
-        
-        try {
-            automata = AutomataParser.parseXmlFile(TEST_FILES_DIRECTORY + "multiple_transitions_from_one_symbol.xml");
-        } catch (AutomataParserException ex) {
-            errorMessage = ex.toString();
-        }
-        
-        assertTrue(errorMessage.equals(AutomataParserException.PREFIX + "Multiple transitions from same symbol."));
+        assertTrue(testException("multiple_transitions_from_one_symbol.xml", "Multiple transitions from same symbol."));
     }
     
     
     @Test
     public void testNoAlphabet(){
-            
-        IAutomaton automata = null;
-        String errorMessage = null;
-        
-        try {
-            automata = AutomataParser.parseXmlFile(TEST_FILES_DIRECTORY + "no_alphabet.xml");
-        } catch (AutomataParserException ex) {
-            errorMessage = ex.toString();
-        }
-        
-        assertTrue(errorMessage.equals(AutomataParserException.PREFIX + "No or more than one alphabet."));
+        assertTrue(testException("no_alphabet.xml", "No or more than one alphabet."));
     }
     
     
     @Test
     public void testNoStates(){
-            
-        IAutomaton automata = null;
-        String errorMessage = null;
-        
-        try {
-            automata = AutomataParser.parseXmlFile(TEST_FILES_DIRECTORY + "no_states.xml");
-        } catch (AutomataParserException ex) {
-            errorMessage = ex.toString();
-        }
-        
-        assertTrue(errorMessage.equals(AutomataParserException.PREFIX + "No states."));
+        assertTrue(testException("no_states.xml", "No states."));
     }
     
     
     @Test
     public void testNoSymbolInAlphabet(){
-            
-        IAutomaton automata = null;
-        String errorMessage = null;
-        
-        try {
-            automata = AutomataParser.parseXmlFile(TEST_FILES_DIRECTORY + "no_symbol_in_alphabet.xml");
-        } catch (AutomataParserException ex) {
-            errorMessage = ex.toString();
-        }
-        
-        assertTrue(errorMessage.equals(AutomataParserException.PREFIX + "No symbols in alphabet."));
+        assertTrue(testException("no_symbol_in_alphabet.xml", "No symbols in alphabet."));
     }
     
     
     @Test
     public void testNoTransitionFromState(){
-            
-        IAutomaton automata = null;
-        String errorMessage = null;
-        
-        try {
-            automata = AutomataParser.parseXmlFile(TEST_FILES_DIRECTORY + "no_transition_from_state.xml");
-        } catch (AutomataParserException ex) {
-            errorMessage = ex.toString();
-        }
-        
-        assertTrue(errorMessage.equals(AutomataParserException.PREFIX + "No transitions from state."));
+        assertTrue(testException("no_transition_from_state.xml", "No transitions from state."));
     }
     
     
     @Test
     public void testStatesAboveAlphabet(){
-            
-        IAutomaton automata = null;
-        String errorMessage = null;
-        
-        try {
-            automata = AutomataParser.parseXmlFile(TEST_FILES_DIRECTORY + "states_above_alphabet.xml");
-        } catch (AutomataParserException ex) {
-            errorMessage = ex.toString();
-        }
-        
-        assertTrue(automata != null);
-        assertTrue(errorMessage == null);
+        assertTrue(testParseAutomata("states_above_alphabet.xml"));
     }
     
     
     @Test
     public void testTransitionUsingSymbolOutsideOfAlphabet(){
-            
-        IAutomaton automata = null;
-        String errorMessage = null;
-        
-        try {
-            automata = AutomataParser.parseXmlFile(TEST_FILES_DIRECTORY + "transition_using_symbol_outside_of_alphabet.xml");
-        } catch (AutomataParserException ex) {
-            errorMessage = ex.toString();
-        }
-        
-        assertTrue(errorMessage.equals(AutomataParserException.PREFIX + "Transition using symbol outside of alphabet."));
+        assertTrue(testException("transition_using_symbol_outside_of_alphabet.xml", "Transition using symbol outside of alphabet."));
     }
     
     
     @Test
     public void testTwoAlphabets(){
-            
-        IAutomaton automata = null;
-        String errorMessage = null;
-        
-        try {
-            automata = AutomataParser.parseXmlFile(TEST_FILES_DIRECTORY + "two_alphabets.xml");
-        } catch (AutomataParserException ex) {
-            errorMessage = ex.toString();
-        }
-        
-        assertTrue(errorMessage.equals(AutomataParserException.PREFIX + "No or more than one alphabet."));
+        assertTrue(testException("two_alphabets.xml", "No or more than one alphabet."));
     }
     
     
     @Test
     public void testUnableToReadDocument(){
-            
-        IAutomaton automata = null;
-        String errorMessage = null;
-        
-        try {
-            automata = AutomataParser.parseXmlFile(TEST_FILES_DIRECTORY + "unable_to_read_document.xml");
-        } catch (AutomataParserException ex) {
-            System.out.println(ex.toString());
-            errorMessage = ex.toString();
-        }
-        
-        assertTrue(errorMessage.equals(AutomataParserException.PREFIX + "Unable to read document."));
+        assertTrue(testException("unable_to_read_document.xml", "Unable to read document."));
     }
 }
