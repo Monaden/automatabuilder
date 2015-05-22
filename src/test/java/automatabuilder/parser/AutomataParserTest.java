@@ -28,6 +28,7 @@ public class AutomataParserTest {
             automata = AutomataParser.parseXmlFile(TEST_FILES_DIRECTORY + filepath);
         } catch (AutomataParserException ex) {
             errorMessage = ex.toString();
+            System.out.println(ex.toString());
         }
         
         return automata != null && errorMessage == null;
@@ -141,5 +142,23 @@ public class AutomataParserTest {
     @Test
     public void testStatesSameName(){
         assertTrue(testException("states_same_name.xml", STATES_SAME_NAME));
+    }
+    
+    
+    @Test
+    public void testUNUSEDfunctionality(){
+        assertTrue(testParseAutomata("UNUSED_functionality.xml"));
+    }
+    
+    
+    @Test
+    public void testNUMBERSfunctionality(){
+        assertTrue(testParseAutomata("NUMBERS_functionality.xml"));
+    }
+    
+    
+    @Test
+    public void testALL_LETTERSfunctionality(){
+        assertTrue(testParseAutomata("ALL_LETTERS_functionality.xml"));
     }
 }

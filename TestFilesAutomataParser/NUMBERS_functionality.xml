@@ -1,0 +1,25 @@
+<automata>
+	<alphabet>
+		<symbol value="NUMBERS"></symbol>
+	</alphabet>
+	<state name="q0" final="false">
+		<transition target="q1" symbol="1"></transition>
+		<transition target="q0" symbol="UNUSED"></transition>
+	</state>
+	<state name="q1" final="false">
+		<transition target="q2" symbol="3"></transition>
+		<transition target="q1" symbol="1"></transition>
+		<transition target="q0" symbol="UNUSED"></transition>
+	</state>
+	<state name="q2" final="false">
+		<transition target="q3" symbol="3"></transition>
+		<transition target="q0" symbol="UNUSED"></transition>
+	</state>
+	<state name="q3" final="false">
+		<transition target="q4" symbol="7"></transition>
+		<transition target="q0" symbol="UNUSED"></transition>
+	</state>
+	<state name="q4" final="true">
+		<transition target="q4" symbol="NUMBERS"></transition>
+	</state>
+</automata>

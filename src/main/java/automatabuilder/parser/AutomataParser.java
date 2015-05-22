@@ -30,11 +30,25 @@ public class AutomataParser {
     public static final String NAME_TAG = "name";
     public static final String FINAL_TAG = "final";
     
+    public static final String NUMBERS = "NUMBERS";
+    public static final String LOWER_CASE_LETTERS = "LOWER_CASE_LETTERS";
+    public static final String UPPER_CASE_LETTERS = "UPPER_CASE_LETTERS";
+    public static final String ALL_LETTERS = "ALL_LETTERS";
+    public static final String UNUSED = "UNUSED";
+    
+    public static final int UNICODE_ZERO_NR = 48;
+    public static final int UNICODE_NINE_NR = 57;
+    public static final int UNICODE_LOWER_CASE_A_NR = 97;
+    public static final int UNICODE_LOWER_CASE_Z_NR = 122;
+    public static final int UNICODE_UPPER_CASE_A_NR = 65;
+    public static final int UNICODE_UPPER_CASE_Z_NR = 90;
+    
     private static Map<String, IState> stateMap = new HashMap();
     private static Map<String, List<ITransition>> transitionMap = new HashMap();
     private static List<IState> states = new ArrayList();
     private static IState startState = null;
     private static IAlphabet alphabet = null;
+    private static Set<Symbol> symbols = null;
     
     
     public static IAutomaton parseXmlFile(String filepath) 
@@ -66,6 +80,7 @@ public class AutomataParser {
         List<Element> symbolElements = getElements(alphabetElement, SYMBOL_TAG);
         Set<Symbol> symbols = getSymbols(symbolElements);
         
+        AutomataParser.symbols = symbols;
         alphabet = new Alphabet(symbols);
     }
     
@@ -83,7 +98,7 @@ public class AutomataParser {
         List<Element> elements = getElementsByTag(parent, tagName);
         
         if(tagName.equals(ALPHABET_TAG) ? elements.size() != 1 : elements.isEmpty()){
-            String errorMessage = "";
+            String errorMessage;
             
             switch(tagName){
                 case ALPHABET_TAG:
@@ -115,7 +130,19 @@ public class AutomataParser {
         
         try{
             for(Element e : symbolElements){
-                symbols.add(new Symbol(e.getAttribute(VALUE_TAG)));
+                String value = e.getAttribute(VALUE_TAG);
+                
+                if(
+                    value.equals(NUMBERS) || 
+                    value.equals(LOWER_CASE_LETTERS) || 
+                    value.equals(UPPER_CASE_LETTERS)|| 
+                    value.equals(ALL_LETTERS)
+                ){
+                    specialSymbolFunctionality(value, symbols);
+                }
+                else{
+                    symbols.add(new Symbol(value));
+                }
             }
         }
         catch(IllegalArgumentException ex){
@@ -184,15 +211,20 @@ public class AutomataParser {
     {
         try{
             for(Element e : transitionElements){
-                    Symbol symbol = new Symbol(e.getAttribute(SYMBOL_TAG));
-                    IState target = stateMap.get(e.getAttribute(TARGET_TAG));
-
-                    if(!alphabet.contains(symbol)){
-                        throw new AutomataParserException(
-                            TRANSITION_WITH_INVALID_SYMBOL
-                        );
-                    }
-                    transitions.add(new Transition(target, symbol));
+                    String value = e.getAttribute(SYMBOL_TAG);
+                
+                if(
+                    value.equals(NUMBERS) || 
+                    value.equals(LOWER_CASE_LETTERS) || 
+                    value.equals(UPPER_CASE_LETTERS)|| 
+                    value.equals(ALL_LETTERS) ||
+                    value.equals(UNUSED)
+                ){
+                    specialTransitionFunctionality(value, e, transitions);
+                }
+                else{
+                    addTransition(value, transitions, e);
+                }
             }
         }
         catch(IllegalArgumentException ex){
@@ -209,6 +241,20 @@ public class AutomataParser {
         if(transitions.size() != alphabet.size()){
             throw new AutomataParserException(MISSING_TRANSITION);
         }
+    }
+    
+    
+    private static void addTransition(String value, List<ITransition> transitions, Element transitionElement)
+        throws AutomataParserException
+    {
+        Symbol symbol = new Symbol(value);
+        IState target = stateMap.get(transitionElement.getAttribute(TARGET_TAG));
+        if(!alphabet.contains(symbol)){
+            throw new AutomataParserException(
+                TRANSITION_WITH_INVALID_SYMBOL
+            );
+        }
+        transitions.add(new Transition(target, symbol));
     }
        
     
@@ -236,6 +282,7 @@ public class AutomataParser {
         states = new ArrayList();
         startState = null;
         alphabet = null;
+        symbols = null;
     }
     
     
@@ -254,5 +301,73 @@ public class AutomataParser {
         }
         
         return elements;
+    }
+    
+    
+    private static void specialSymbolFunctionality(String value, Set<Symbol> symbols){
+        switch(value){
+            case NUMBERS:
+                for(int i = UNICODE_ZERO_NR; i <= UNICODE_NINE_NR; i++){
+                    symbols.add(new Symbol(String.valueOf((char) i)));
+                }  
+                break;
+            case LOWER_CASE_LETTERS:
+                for(int i = UNICODE_LOWER_CASE_A_NR; i <= UNICODE_LOWER_CASE_Z_NR; i++){
+                    symbols.add(new Symbol(String.valueOf((char) i)));
+                }
+                break;
+            case UPPER_CASE_LETTERS:
+                for(int i = UNICODE_UPPER_CASE_A_NR; i <= UNICODE_UPPER_CASE_Z_NR; i++){
+                    symbols.add(new Symbol(String.valueOf((char) i)));
+                }
+                break;
+            case ALL_LETTERS:
+                for(int i = UNICODE_LOWER_CASE_A_NR; i <= UNICODE_LOWER_CASE_Z_NR; i++){
+                    symbols.add(new Symbol(String.valueOf((char) i)));
+                }
+                for(int i = UNICODE_UPPER_CASE_A_NR; i <= UNICODE_UPPER_CASE_Z_NR; i++){
+                    symbols.add(new Symbol(String.valueOf((char) i)));
+                }
+                break;
+        }
+    }
+    
+    private static void specialTransitionFunctionality(String value, Element e, List<ITransition> transitions)
+        throws AutomataParserException
+    {
+        switch(value){
+            case NUMBERS:
+                for(int i = UNICODE_ZERO_NR; i <= UNICODE_NINE_NR; i++){
+                    addTransition(String.valueOf((char) i), transitions, e);
+                }
+                break;
+            case LOWER_CASE_LETTERS:
+                for(int i = UNICODE_LOWER_CASE_A_NR; i <= UNICODE_LOWER_CASE_Z_NR; i++){
+                    addTransition(String.valueOf((char) i), transitions, e);
+                }
+            case UPPER_CASE_LETTERS:
+                for(int i = UNICODE_UPPER_CASE_A_NR; i <= UNICODE_UPPER_CASE_Z_NR; i++){
+                    addTransition(String.valueOf((char) i), transitions, e);
+                }
+                break;
+            case ALL_LETTERS:
+                for(int i = UNICODE_LOWER_CASE_A_NR; i <= UNICODE_LOWER_CASE_Z_NR; i++){
+                    addTransition(String.valueOf((char) i), transitions, e);
+                }
+                for(int i = UNICODE_UPPER_CASE_A_NR; i <= UNICODE_UPPER_CASE_Z_NR; i++){
+                    addTransition(String.valueOf((char) i), transitions, e);
+                }
+                break;
+            case UNUSED:
+                Set<Symbol> remainingSymbols = new HashSet(symbols);
+                for(ITransition i : transitions){
+                    remainingSymbols.remove(i.getSymbol());
+                }
+                for(Symbol i : remainingSymbols){
+                    IState target = stateMap.get(e.getAttribute(TARGET_TAG));
+                    transitions.add(new Transition(target, i));
+                }
+                break;
+        }
     }
 }
