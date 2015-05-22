@@ -18,29 +18,17 @@ import org.xml.sax.SAXException;
  * @author Mikael
  */
 public class AutomataParser {
-    
-    public static final int DEFAULT_MODE = 0;
-    public static final int CONVENIENT_MODE = 1;
-    
+
     private static Map<String, IState> stateMap = new HashMap();
     private static Map<String, List<ITransition>> transitionMap = new HashMap();
     private static List<IState> states = new ArrayList();
     private static IState startState = null;
     private static IAlphabet alphabet = null;
-    private static int parseMode;
-    
-    public static IAutomaton parseXmlFile(String filepath)
-        throws AutomataParserException
-    {
-        return parseXmlFile(filepath, DEFAULT_MODE);
-    }
     
     
-    public static IAutomaton parseXmlFile(String filepath, int modeFlag) 
+    public static IAutomaton parseXmlFile(String filepath) 
         throws AutomataParserException
     {   
-        parseMode = modeFlag;
-        
         try{
             Document document = getDocument(filepath);
             Element docElem = document.getDocumentElement();
@@ -198,10 +186,8 @@ public class AutomataParser {
             }
         }
         
-        if(parseMode == DEFAULT_MODE){
-            if(transitions.size() != alphabet.size()){
-                throw new AutomataParserException("Missing transitions.");
-            }
+        if(transitions.size() != alphabet.size()){
+            throw new AutomataParserException("Missing transitions.");
         }
     }
        
