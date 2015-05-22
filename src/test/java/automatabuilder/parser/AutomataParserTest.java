@@ -59,6 +59,7 @@ public class AutomataParserTest {
         assertTrue(testParseAutomata("subword_abc.xml"));
     }
     
+    
     @Test
     public void testInvalidState(){
         assertTrue(testException("invalid_state.xml", INVALID_STATE));
@@ -134,5 +135,11 @@ public class AutomataParserTest {
     @Test
     public void testUnableToReadDocument(){
         assertTrue(testException("unable_to_read_document.xml", UNABLE_TO_READ));
+    }
+    
+    
+    @Test
+    public void testStatesSameName(){
+        assertTrue(testException("states_same_name.xml", STATES_SAME_NAME));
     }
 }

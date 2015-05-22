@@ -156,6 +156,14 @@ public class AutomataParser {
         catch(IllegalArgumentException ex){
             throw new AutomataParserException(INVALID_STATE);
         }
+        
+        Set<String> checkDuplicates = new HashSet();
+        for(IState i : states){
+            if(!checkDuplicates.add(i.getName())){
+                throw new AutomataParserException(STATES_SAME_NAME);
+            }
+        }
+        
         return states;
     }
     
