@@ -5,6 +5,8 @@ import interfaces.IWord;
 
 import java.lang.StringBuilder;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 public class Alphabet implements IAlphabet {
@@ -30,21 +32,37 @@ public class Alphabet implements IAlphabet {
     }
 
     @Override
-    public IWord power(int n) {
-        //TODO Implement
-        return null;
+    public List<IWord> power(int n) {
+        List<IWord> words = new LinkedList();
+        // Base case
+        if (n == 1) {
+            for (Symbol a : symbols) {
+                words.add(new Word(a.toString()));
+            }
+            return words;
+        }
+        
+        List<IWord> oneShort = power(n-1);
+        for (Symbol a : symbols) {
+            for (IWord word : oneShort) {
+                words.add(new Word(a, word));
+            }
+        }
+        return words;
     }
 
     @Override
-    public Boolean isValid(IWord word) {
-        //TODO implement
-        return null;
-    }
-
-    @Override
-    public Boolean isValid() {
-        //TODO Implpement
-        return null;
+    public boolean isValid(IWord word) {
+        //TODO Implement with iterable
+        IWord next = word;
+        while (next != null && next != Word.Empty) {
+            Symbol a = next.head();
+            if (!symbols.contains(a) && a != Symbol.Epsilon) {
+                return false;
+            }
+            next = next.tail();
+        }
+        return true;
     }
 
     @Override
