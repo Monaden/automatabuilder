@@ -191,6 +191,8 @@ public class AutomataParser {
             }
         }
         
+        startState = states.get(0);
+        
         return states;
     }
     
