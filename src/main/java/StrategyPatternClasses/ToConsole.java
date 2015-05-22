@@ -13,18 +13,20 @@ import java.util.List;
  */
 public class ToConsole implements IShowDFA {
 
+    StringBuilder sb = new StringBuilder();
+    StringBuilder whitespace    = new StringBuilder();
+    String whitespaceString = whitespace.toString();
+
     @Override
     public void showTable(List<IState> stateList, IAlphabet alphabet){
-        StringBuilder sb = new StringBuilder();
-        StringBuilder whitespace = new StringBuilder();
         int maxNameLength = getNameLength(alphabet, stateList);
 
         for (int i = 0; i < maxNameLength/2; i++) {
             whitespace.append(' ');
         }
-        firstRow(alphabet,whitespace.toString(),maxNameLength,sb);
+        firstRow(alphabet,maxNameLength);
         for (IState state : stateList) {
-            addrow(state, whitespace.toString(), sb);
+            addrow(state);
         }
         System.out.println(sb);
     }
@@ -48,40 +50,40 @@ public class ToConsole implements IShowDFA {
         return cellLength;
     }
 
-    private void firstRow(IAlphabet alphabet,String whitespace,int extraWhitespace, StringBuilder stringBuilder){
-        stringBuilder.append('[');
-        stringBuilder.append(whitespace + whitespace);
+    private void firstRow(IAlphabet alphabet,int extraWhitespace){
+        sb.append('[');
+        sb.append(whitespaceString + whitespaceString);
         for (int i = 0; i < extraWhitespace; i++) {
-            stringBuilder.append(" ");
+            sb.append(" ");
         }
         for (Symbol symbol : alphabet) {
-            addcell(whitespace, symbol.toString(), stringBuilder);
+            addcell(symbol.toString());
         }
-        stringBuilder.append("]\n");
+        sb.append("]\n");
     }
 
     /*
     adds a row the StringBuilder with a state to the far left and
     the states transitions between two whitespace.
      */
-    private void addrow( IState state, String whitespace, StringBuilder stringBuilder){
+    private void addrow( IState state){
         List<ITransition> transitionList = state.getTransitions();
-        stringBuilder.append('[');
-        stringBuilder.append(whitespace);
-        stringBuilder.append(state.getName());
-        stringBuilder.append(whitespace);
+        sb.append('[');
+        sb.append(whitespaceString);
+        sb.append(state.getName());
+        sb.append(whitespaceString);
         for (ITransition transition : transitionList) {
-            addcell(whitespace, transition.getSymbol().toString(), stringBuilder);
+            addcell(transition.getSymbol().toString());
         }
-        stringBuilder.append("]\n");
+        sb.append("]\n");
     }
     /*
     adds a single cell to the StringBuilder with the cellChar between two whitespace
      */
-    private void addcell(String whitespace, String cellChar, StringBuilder stringBuilder) {
-            stringBuilder.append('|');
-            stringBuilder.append(whitespace.toString());
-            stringBuilder.append(cellChar);
-            stringBuilder.append(whitespace.toString());
+    private void addcell(String cellChar) {
+            sb.append('|');
+            sb.append(whitespaceString);
+            sb.append(cellChar);
+            sb.append(whitespaceString);
     }
 }
