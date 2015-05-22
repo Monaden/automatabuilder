@@ -1,8 +1,11 @@
 package interfaces;
 
-public interface IAlphabet {
-    public IWord power(int n);
-    public Boolean isValid(IWord word);
+import automatabuilder.Symbol;
 
-    Boolean isValid();
+import java.util.List;
+
+public interface IAlphabet extends Iterable<Symbol>{
+    public List<IWord> power(int n);
+    public boolean isValid(IWord word);
+
 }

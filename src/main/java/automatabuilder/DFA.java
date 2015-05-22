@@ -1,9 +1,7 @@
 package automatabuilder;
 
-import interfaces.IAlphabet;
-import interfaces.IAutomaton;
-import interfaces.IState;
-import interfaces.IWord;
+import interfaces.*;
+
 import java.util.List;
 
 
@@ -15,6 +13,7 @@ public class DFA implements IAutomaton {
 
     protected IState startState;
 
+    protected IShowDFA outputter;
 
     protected IState delta(IState q, Symbol s) {
         //TODO: Implement
@@ -31,4 +30,5 @@ public class DFA implements IAutomaton {
         //TODO: Implement
         return null;
     }
+
 }
