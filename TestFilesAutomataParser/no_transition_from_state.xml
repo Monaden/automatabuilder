@@ -1,0 +1,24 @@
+<automata>
+    <alphabet>
+        <symbol value="a"></symbol>
+        <symbol value="b"></symbol>
+        <symbol value="c"></symbol>
+    </alphabet>
+    <state name="q0" final="false">
+        <transition target="q1" symbol="a"></transition>
+        <transition target="q0" symbol="b"></transition>
+        <transition target="q0" symbol="c"></transition>
+    </state>
+    <state name="q1" final="false">
+        <transition target="q1" symbol="a"></transition>
+        <transition target="q2" symbol="b"></transition>
+        <transition target="q0" symbol="c"></transition>
+    </state>
+    <state name="q2" final="false">
+        <transition target="q0" symbol="a"></transition>
+        <transition target="q0" symbol="b"></transition>
+        <transition target="q3" symbol="c"></transition>
+    </state>
+    <state name="q3" final="true">
+    </state>
+</automata>

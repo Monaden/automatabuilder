@@ -1,0 +1,7 @@
+<automata>
+    <alphabet>
+        <symbol value="a"></symbol>
+        <symbol value="b"></symbol>
+        <symbol value="c"></symbol>
+    </alphabet>
+</automata>

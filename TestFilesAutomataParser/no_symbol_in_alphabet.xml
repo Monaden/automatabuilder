@@ -1,0 +1,10 @@
+<automata>
+	<alphabet>
+    </alphabet>
+    <state name="OFF" final="false">
+        <transition target="ON" symbol="Push"></transition>
+    </state>
+    <state name="ON" final="true">
+        <transition target="OFF" symbol="Push"></transition>
+    </state>
+</automata>

@@ -71,7 +71,7 @@ public class AutomataParser {
     {
         List<Element> elements = getElementsByTag(parent, tagName);
         
-        if(tagName == "alphabet" ? elements.size() != 1 : elements.isEmpty()){
+        if(tagName.equals("alphabet") ? elements.size() != 1 : elements.isEmpty()){
             String errorMessage = "";
             
             switch(tagName){
@@ -86,8 +86,9 @@ public class AutomataParser {
                     break;
                 case "transition":
                     errorMessage = "No transitions from state.";
+                    break;
                 default:
-                    
+                    errorMessage = "This should never happen!";
             }
             throw new AutomataParserException(errorMessage);
         }
@@ -153,7 +154,7 @@ public class AutomataParser {
     {
         for(Element e : stateElements){
             String name = e.getAttribute("name");
-            List<Element> transitionElements = getElements(e, "transitions");
+            List<Element> transitionElements = getElements(e, "transition");
             addTransitions(transitionMap.get(name), transitionElements);            
         }
     }
@@ -169,7 +170,7 @@ public class AutomataParser {
 
                     if(!alphabet.contains(symbol)){
                         throw new AutomataParserException(
-                            "Transition using symbols outside of alphabet."
+                            "Transition using symbol outside of alphabet."
                         );
                     }
                     transitions.add(new Transition(target, symbol));
