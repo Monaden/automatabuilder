@@ -3,6 +3,8 @@ package automatabuilder;
 import interfaces.IAlphabet;
 import interfaces.IWord;
 
+import java.lang.StringBuilder;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -61,5 +63,10 @@ public class Alphabet implements IAlphabet {
             next = next.tail();
         }
         return true;
+    }
+
+    @Override
+    public Iterator<Symbol> iterator() {
+        return symbols.iterator();
     }
 }

@@ -2,6 +2,8 @@ package automatabuilder;
 
 import interfaces.IState;
 import interfaces.ITransition;
+
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,6 +21,11 @@ public class State implements IState {
         this.transitions = transitions;
         this.isFinal     = isFinal;
         this.name        = name;
+    }
+
+    @Override
+    public List<ITransition> getTransitions() {
+        return new LinkedList<>(transitions);
     }
 
     @Override
