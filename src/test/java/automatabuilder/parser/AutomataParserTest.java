@@ -9,6 +9,8 @@ import interfaces.IAutomaton;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
+import static automatabuilder.parser.AutomataParserException.*;
+
 /**
  *
  * @author Mikael
@@ -59,55 +61,55 @@ public class AutomataParserTest {
     
     @Test
     public void testInvalidState(){
-        assertTrue(testException("invalid_state.xml", "Invalid state."));
+        assertTrue(testException("invalid_state.xml", INVALID_STATE));
     }
     
 
     @Test
     public void testInvalidSymbol(){
-        assertTrue(testException("invalid_symbol.xml", "Invalid symbol."));
+        assertTrue(testException("invalid_symbol.xml", INVALID_SYMBOL));
     }
     
     
     @Test
     public void testInvalidTransition(){
-        assertTrue(testException("invalid_transition.xml", "Invalid transition."));
+        assertTrue(testException("invalid_transition.xml", INVALID_TRANSITION));
     }
     
     
     @Test
     public void testMissingTransition(){
-        assertTrue(testException("missing_transition.xml", "Missing transitions."));
+        assertTrue(testException("missing_transition.xml", MISSING_TRANSITION));
     }
     
     
     @Test
     public void testMultipleTransitionsFromOneSymbol(){
-        assertTrue(testException("multiple_transitions_from_one_symbol.xml", "Multiple transitions from same symbol."));
+        assertTrue(testException("multiple_transitions_from_one_symbol.xml", MULTIPLE_TRANSITIONS_FORM_SYMBOL));
     }
     
     
     @Test
     public void testNoAlphabet(){
-        assertTrue(testException("no_alphabet.xml", "No or more than one alphabet."));
+        assertTrue(testException("no_alphabet.xml", NO_OR_MORE_APLHABET));
     }
     
     
     @Test
     public void testNoStates(){
-        assertTrue(testException("no_states.xml", "No states."));
+        assertTrue(testException("no_states.xml", NO_STATES));
     }
     
     
     @Test
     public void testNoSymbolInAlphabet(){
-        assertTrue(testException("no_symbol_in_alphabet.xml", "No symbols in alphabet."));
+        assertTrue(testException("no_symbol_in_alphabet.xml", NO_SYMBOLS));
     }
     
     
     @Test
     public void testNoTransitionFromState(){
-        assertTrue(testException("no_transition_from_state.xml", "No transitions from state."));
+        assertTrue(testException("no_transition_from_state.xml", NO_TRANSITIONS));
     }
     
     
@@ -119,18 +121,18 @@ public class AutomataParserTest {
     
     @Test
     public void testTransitionUsingSymbolOutsideOfAlphabet(){
-        assertTrue(testException("transition_using_symbol_outside_of_alphabet.xml", "Transition using symbol outside of alphabet."));
+        assertTrue(testException("transition_using_symbol_outside_of_alphabet.xml", TRANSITION_WITH_INVALID_SYMBOL));
     }
     
     
     @Test
     public void testTwoAlphabets(){
-        assertTrue(testException("two_alphabets.xml", "No or more than one alphabet."));
+        assertTrue(testException("two_alphabets.xml", NO_OR_MORE_APLHABET));
     }
     
     
     @Test
     public void testUnableToReadDocument(){
-        assertTrue(testException("unable_to_read_document.xml", "Unable to read document."));
+        assertTrue(testException("unable_to_read_document.xml", UNABLE_TO_READ));
     }
 }

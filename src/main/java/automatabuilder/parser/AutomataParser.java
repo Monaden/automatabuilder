@@ -13,12 +13,23 @@ import javax.xml.parsers.*;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
+import static automatabuilder.parser.AutomataParserException.*;
+
 /**
  *
  * @author Mikael
  */
 public class AutomataParser {
-
+    
+    public static final String ALPHABET_TAG = "alphabet";
+    public static final String SYMBOL_TAG = "symbol";
+    public static final String STATE_TAG = "state";
+    public static final String TRANSITION_TAG = "transition";
+    public static final String TARGET_TAG = "target";
+    public static final String VALUE_TAG = "value";
+    public static final String NAME_TAG = "name";
+    public static final String FINAL_TAG = "final";
+    
     private static Map<String, IState> stateMap = new HashMap();
     private static Map<String, List<ITransition>> transitionMap = new HashMap();
     private static List<IState> states = new ArrayList();
@@ -52,7 +63,7 @@ public class AutomataParser {
         throws AutomataParserException
     {
         Element alphabetElement = getAlphabetElement(docElem);
-        List<Element> symbolElements = getElements(alphabetElement, "symbol");
+        List<Element> symbolElements = getElements(alphabetElement, SYMBOL_TAG);
         Set<Symbol> symbols = getSymbols(symbolElements);
         
         alphabet = new Alphabet(symbols);
@@ -62,7 +73,7 @@ public class AutomataParser {
     private static Element getAlphabetElement(Element parent)
         throws AutomataParserException
     {
-        return getElements(parent, "alphabet").get(0);
+        return getElements(parent, ALPHABET_TAG).get(0);
     }
     
     
@@ -71,24 +82,24 @@ public class AutomataParser {
     {
         List<Element> elements = getElementsByTag(parent, tagName);
         
-        if(tagName.equals("alphabet") ? elements.size() != 1 : elements.isEmpty()){
+        if(tagName.equals(ALPHABET_TAG) ? elements.size() != 1 : elements.isEmpty()){
             String errorMessage = "";
             
             switch(tagName){
-                case "alphabet":
-                    errorMessage = "No or more than one alphabet.";
+                case ALPHABET_TAG:
+                    errorMessage = NO_OR_MORE_APLHABET;
                     break;
-                case "symbol":
-                    errorMessage = "No symbols in alphabet.";
+                case SYMBOL_TAG:
+                    errorMessage = NO_SYMBOLS;
                     break;
-                case "state":
-                    errorMessage = "No states.";
+                case STATE_TAG:
+                    errorMessage = NO_STATES;
                     break;
-                case "transition":
-                    errorMessage = "No transitions from state.";
+                case TRANSITION_TAG:
+                    errorMessage = NO_TRANSITIONS;
                     break;
                 default:
-                    errorMessage = "This should never happen!";
+                    errorMessage = SHOULD_NOT_HAPPEN;
             }
             throw new AutomataParserException(errorMessage);
         }
@@ -104,11 +115,11 @@ public class AutomataParser {
         
         try{
             for(Element e : symbolElements){
-                symbols.add(new Symbol(e.getAttribute("value")));
+                symbols.add(new Symbol(e.getAttribute(VALUE_TAG)));
             }
         }
         catch(IllegalArgumentException ex){
-            throw new AutomataParserException("Invalid symbol.");
+            throw new AutomataParserException(INVALID_SYMBOL);
         }
         
         return symbols;
@@ -118,7 +129,7 @@ public class AutomataParser {
     private static void parseStates(Element docElem)
         throws AutomataParserException
     {
-        List<Element> stateElements = getElements(docElem, "state");
+        List<Element> stateElements = getElements(docElem, STATE_TAG);
         states = getStates(stateElements);
         parseTransitions(stateElements);
     }
@@ -131,8 +142,8 @@ public class AutomataParser {
         
         try{
             for(Element e : stateElements){
-                String name = e.getAttribute("name");
-                Boolean isFinal = Boolean.parseBoolean(e.getAttribute("final"));
+                String name = e.getAttribute(NAME_TAG);
+                Boolean isFinal = Boolean.parseBoolean(e.getAttribute(FINAL_TAG));
 
                 List<ITransition> transitions = new ArrayList();
                 IState state = new State(transitions, isFinal, name);
@@ -143,7 +154,7 @@ public class AutomataParser {
             }
         }
         catch(IllegalArgumentException ex){
-            throw new AutomataParserException("Invalid state.");
+            throw new AutomataParserException(INVALID_STATE);
         }
         return states;
     }
@@ -153,8 +164,8 @@ public class AutomataParser {
         throws AutomataParserException
     {
         for(Element e : stateElements){
-            String name = e.getAttribute("name");
-            List<Element> transitionElements = getElements(e, "transition");
+            String name = e.getAttribute(NAME_TAG);
+            List<Element> transitionElements = getElements(e, TRANSITION_TAG);
             addTransitions(transitionMap.get(name), transitionElements);            
         }
     }
@@ -165,30 +176,30 @@ public class AutomataParser {
     {
         try{
             for(Element e : transitionElements){
-                    Symbol symbol = new Symbol(e.getAttribute("symbol"));
-                    IState target = stateMap.get(e.getAttribute("target"));
+                    Symbol symbol = new Symbol(e.getAttribute(SYMBOL_TAG));
+                    IState target = stateMap.get(e.getAttribute(TARGET_TAG));
 
                     if(!alphabet.contains(symbol)){
                         throw new AutomataParserException(
-                            "Transition using symbol outside of alphabet."
+                            TRANSITION_WITH_INVALID_SYMBOL
                         );
                     }
                     transitions.add(new Transition(target, symbol));
             }
         }
         catch(IllegalArgumentException ex){
-            throw new AutomataParserException("Invalid transition.");
+            throw new AutomataParserException(INVALID_TRANSITION);
         }
         
         Set<Symbol> checkDuplicates = new HashSet();
         for(ITransition i : transitions){
             if(!checkDuplicates.add(i.getSymbol())){
-                throw new AutomataParserException("Multiple transitions from same symbol.");
+                throw new AutomataParserException(MULTIPLE_TRANSITIONS_FORM_SYMBOL);
             }
         }
         
         if(transitions.size() != alphabet.size()){
-            throw new AutomataParserException("Missing transitions.");
+            throw new AutomataParserException(MISSING_TRANSITION);
         }
     }
        
@@ -204,7 +215,7 @@ public class AutomataParser {
             document = db.parse(filepath);
         }
         catch(ParserConfigurationException | SAXException | IOException ex){
-            throw new AutomataParserException("Unable to read document.");
+            throw new AutomataParserException(UNABLE_TO_READ);
         }
         
         return document;
@@ -227,7 +238,7 @@ public class AutomataParser {
         NodeList nodeList = parent.getElementsByTagName(tagName);
         
         if(nodeList == null){
-            throw new AutomataParserException("NodeList is null");
+            throw new AutomataParserException(NODE_LIST_IS_NULL);
         }
         
         for(int i = 0; i < nodeList.getLength(); i++){
