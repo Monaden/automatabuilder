@@ -17,7 +17,15 @@
 	</state>
 	<state name="q3" final="false">
 		<transition target="q4" symbol="7"></transition>
-		<transition target="q0" symbol="UNUSED"></transition>
+		<transition target="q0" symbol="0"></transition>
+		<transition target="q0" symbol="1"></transition>
+		<transition target="q0" symbol="2"></transition>
+		<transition target="q0" symbol="3"></transition>
+		<transition target="q0" symbol="4"></transition>
+		<transition target="q0" symbol="5"></transition>
+		<transition target="q0" symbol="6"></transition>
+		<transition target="q0" symbol="8"></transition>
+		<transition target="q0" symbol="9"></transition>
 	</state>
 	<state name="q4" final="true">
 		<transition target="q4" symbol="NUMBERS"></transition>

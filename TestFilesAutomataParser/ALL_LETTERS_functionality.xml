@@ -17,7 +17,58 @@
 	</state>
 	<state name="q3" final="false">
 		<transition target="q4" symbol="o"></transition>
-		<transition target="q0" symbol="UNUSED"></transition>
+		<transition target="q0" symbol="a"></transition>
+		<transition target="q0" symbol="b"></transition>
+		<transition target="q0" symbol="c"></transition>
+		<transition target="q0" symbol="d"></transition>
+		<transition target="q0" symbol="e"></transition>
+		<transition target="q0" symbol="f"></transition>
+		<transition target="q0" symbol="g"></transition>
+		<transition target="q0" symbol="h"></transition>
+		<transition target="q0" symbol="i"></transition>
+		<transition target="q0" symbol="j"></transition>
+		<transition target="q0" symbol="k"></transition>
+		<transition target="q0" symbol="l"></transition>
+		<transition target="q0" symbol="m"></transition>
+		<transition target="q0" symbol="n"></transition>
+		<transition target="q0" symbol="p"></transition>
+		<transition target="q0" symbol="q"></transition>
+		<transition target="q0" symbol="r"></transition>
+		<transition target="q0" symbol="s"></transition>
+		<transition target="q0" symbol="t"></transition>
+		<transition target="q0" symbol="u"></transition>
+		<transition target="q0" symbol="v"></transition>
+		<transition target="q0" symbol="w"></transition>
+		<transition target="q0" symbol="x"></transition>
+		<transition target="q0" symbol="y"></transition>
+		<transition target="q0" symbol="z"></transition>
+		<transition target="q0" symbol="A"></transition>
+		<transition target="q0" symbol="B"></transition>
+		<transition target="q0" symbol="C"></transition>
+		<transition target="q0" symbol="D"></transition>
+		<transition target="q0" symbol="E"></transition>
+		<transition target="q0" symbol="F"></transition>
+		<transition target="q0" symbol="G"></transition>
+		<transition target="q0" symbol="H"></transition>
+		<transition target="q0" symbol="I"></transition>
+		<transition target="q0" symbol="J"></transition>
+		<transition target="q0" symbol="K"></transition>
+		<transition target="q0" symbol="L"></transition>
+		<transition target="q0" symbol="M"></transition>
+		<transition target="q0" symbol="N"></transition>
+		<transition target="q0" symbol="O"></transition>
+		<transition target="q0" symbol="P"></transition>
+		<transition target="q0" symbol="Q"></transition>
+		<transition target="q0" symbol="R"></transition>
+		<transition target="q0" symbol="S"></transition>
+		<transition target="q0" symbol="T"></transition>
+		<transition target="q0" symbol="U"></transition>
+		<transition target="q0" symbol="V"></transition>
+		<transition target="q0" symbol="W"></transition>
+		<transition target="q0" symbol="X"></transition>
+		<transition target="q0" symbol="Y"></transition>
+		<transition target="q0" symbol="Z"></transition>
+
 	</state>
 	<state name="q4" final="true">
 		<transition target="q4" symbol="ALL_LETTERS"></transition>
