@@ -24,6 +24,7 @@ public class StateTest {
     private IState q1;
     private Symbol a;
 
+
     @Before
     public void setUp() throws Exception {
         transitions = new Vector<>();
