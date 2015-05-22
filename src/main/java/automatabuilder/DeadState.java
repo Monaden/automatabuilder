@@ -6,6 +6,10 @@
 package automatabuilder;
 
 import interfaces.IState;
+import interfaces.ITransition;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -24,6 +28,11 @@ public enum DeadState implements IState {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public List<ITransition> getTransitions(){
+        return new LinkedList<>();
     }
 
     @Override

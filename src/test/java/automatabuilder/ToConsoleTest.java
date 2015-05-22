@@ -44,5 +44,7 @@ public class ToConsoleTest {
         List<IState> stateList = new LinkedList<>();
         stateList.add(q0);
         outputter.showTable(stateList,alphabet);
+        String result = "[  |a|b]\n[q0|a|b]\n";
+
     }
 }
