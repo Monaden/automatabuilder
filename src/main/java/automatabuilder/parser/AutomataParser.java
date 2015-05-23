@@ -14,6 +14,8 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import static automatabuilder.parser.AutomataParserException.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -49,7 +51,6 @@ public class AutomataParser {
     private static IState startState = null;
     private static IAlphabet alphabet = null;
     private static Set<Symbol> symbols = null;
-    
     
     public static IAutomaton parseXmlFile(String filepath) 
         throws AutomataParserException
@@ -96,7 +97,15 @@ public class AutomataParser {
         throws AutomataParserException
     {
         List<Element> elements = getElementsByTag(parent, tagName);
+        checkForMissingElements(elements, tagName);
         
+        return elements;
+    }
+    
+    
+    private static void checkForMissingElements(List<Element> elements, String tagName)
+        throws AutomataParserException
+    {
         if(tagName.equals(ALPHABET_TAG) ? elements.size() != 1 : elements.isEmpty()){
             String errorMessage;
             
@@ -118,8 +127,6 @@ public class AutomataParser {
             }
             throw new AutomataParserException(errorMessage);
         }
-        
-        return elements;
     }
     
     
@@ -132,12 +139,7 @@ public class AutomataParser {
             for(Element e : symbolElements){
                 String value = e.getAttribute(VALUE_TAG);
                 
-                if(
-                    value.equals(NUMBERS) || 
-                    value.equals(LOWER_CASE_LETTERS) || 
-                    value.equals(UPPER_CASE_LETTERS)|| 
-                    value.equals(ALL_LETTERS)
-                ){
+                if(isSpecialSymbol(value)){
                     specialSymbolFunctionality(value, symbols);
                 }
                 else{
@@ -213,15 +215,9 @@ public class AutomataParser {
     {
         try{
             for(Element e : transitionElements){
-                    String value = e.getAttribute(SYMBOL_TAG);
+                String value = e.getAttribute(SYMBOL_TAG);
                 
-                if(
-                    value.equals(NUMBERS) || 
-                    value.equals(LOWER_CASE_LETTERS) || 
-                    value.equals(UPPER_CASE_LETTERS)|| 
-                    value.equals(ALL_LETTERS) ||
-                    value.equals(UNUSED)
-                ){
+                if(isSpecialSymbol(value)){
                     specialTransitionFunctionality(value, e, transitions);
                 }
                 else{
@@ -306,6 +302,15 @@ public class AutomataParser {
         }
         
         return elements;
+    }
+    
+    
+    private static boolean isSpecialSymbol(String value){
+        return value.equals(NUMBERS) || 
+               value.equals(LOWER_CASE_LETTERS) || 
+               value.equals(UPPER_CASE_LETTERS)|| 
+               value.equals(ALL_LETTERS) ||
+               value.equals(UNUSED);
     }
     
     
