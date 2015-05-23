@@ -134,13 +134,7 @@ public class AutomataParserTest {
     public void testTwoAlphabets(){
         assertTrue(testException("two_alphabets.xml", NO_OR_MORE_APLHABET));
     }
-    
-    
-    @Test
-    public void testUnableToReadDocument(){
-        assertTrue(testException("mismatching_tags.xml", MISMATCHING_TAGS));
-    }
-    
+        
     
     @Test
     public void testStatesSameName(){

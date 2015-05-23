@@ -65,11 +65,8 @@ public class AutomataParser {
         catch(IllegalArgumentException ex){
             throw new AutomataParserException(ex.getMessage());
         }
-        catch(ParserConfigurationException | SAXException ex){
-            throw new AutomataParserException(MISMATCHING_TAGS);
-        }
-        catch(IOException ex){
-            throw new AutomataParserException(UNABLE_TO_READ);
+        catch(ParserConfigurationException | SAXException | IOException ex){
+            throw new AutomataParserException(ex.getMessage());
         }
         finally{
             resetStaticVariables();
