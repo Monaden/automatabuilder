@@ -181,21 +181,28 @@ public class AutomataParser {
                 transitionMap.put(name, transitions);
                 stateMap.put(name, state);            
             }
+            
+            checkCorrectStates(states);
+            
+            startState = states.get(0);
+        
+            return states;
         }
         catch(IllegalArgumentException ex){
             throw new AutomataParserException(INVALID_STATE);
         }
-        
+    }
+    
+    
+    private static void checkCorrectStates(List<IState> states)
+        throws AutomataParserException
+    {
         Set<String> checkDuplicates = new HashSet();
         for(IState i : states){
             if(!checkDuplicates.add(i.getName())){
                 throw new AutomataParserException(STATES_SAME_NAME);
             }
         }
-        
-        startState = states.get(0);
-        
-        return states;
     }
     
     
@@ -224,11 +231,18 @@ public class AutomataParser {
                     addTransition(value, transitions, e);
                 }
             }
+            
+            checkCorrectTransitions(transitions);
         }
         catch(IllegalArgumentException ex){
             throw new AutomataParserException(INVALID_TRANSITION);
         }
-        
+    }
+    
+    
+    private static void checkCorrectTransitions(List<ITransition> transitions)
+        throws AutomataParserException
+    {
         Set<Symbol> checkDuplicates = new HashSet();
         for(ITransition i : transitions){
             if(!checkDuplicates.add(i.getSymbol())){
