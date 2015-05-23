@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package automatabuilder.parser;
 
 import automatabuilder.*;
@@ -14,8 +10,6 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import static automatabuilder.parser.AutomataParserException.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -47,10 +41,10 @@ public class AutomataParser {
     
     private static Map<String, IState> stateMap = new HashMap();
     private static Map<String, List<ITransition>> transitionMap = new HashMap();
-    private static List<IState> states = new ArrayList();
+    private static List<IState> automataStates = new ArrayList();
     private static IState startState = null;
     private static IAlphabet alphabet = null;
-    private static Set<Symbol> symbols = null;
+    private static Set<Symbol> symbolsInAlphabet = null;
     
     public static IAutomaton parseXmlFile(String filepath) 
         throws AutomataParserException
@@ -61,7 +55,7 @@ public class AutomataParser {
             parseAlphabet(docElem);
             parseStates(docElem);
 
-            IAutomaton automata = new DFA(states, alphabet, startState);
+            IAutomaton automata = new DFA(automataStates, alphabet, startState);
         
             return automata;
         }
@@ -81,7 +75,7 @@ public class AutomataParser {
         List<Element> symbolElements = getElements(alphabetElement, SYMBOL_TAG);
         Set<Symbol> symbols = getSymbols(symbolElements);
         
-        AutomataParser.symbols = symbols;
+        symbolsInAlphabet = symbols;
         alphabet = new Alphabet(symbols);
     }
     
@@ -133,10 +127,10 @@ public class AutomataParser {
     private static Set<Symbol> getSymbols(List<Element> symbolElements)
         throws AutomataParserException
     {
-        Set<Symbol> symbols = new HashSet();
-        
         try{
-            for(Element e : symbolElements){
+            Set<Symbol> symbols = new HashSet();
+        
+            symbolElements.forEach(e -> {
                 String value = e.getAttribute(VALUE_TAG);
                 
                 if(isSpecialSymbol(value)){
@@ -145,13 +139,13 @@ public class AutomataParser {
                 else{
                     symbols.add(new Symbol(value));
                 }
-            }
+            });
+            
+            return symbols;
         }
         catch(IllegalArgumentException ex){
             throw new AutomataParserException(INVALID_SYMBOL);
         }
-        
-        return symbols;
     }
         
     
@@ -159,7 +153,7 @@ public class AutomataParser {
         throws AutomataParserException
     {
         List<Element> stateElements = getElements(docElem, STATE_TAG);
-        states = getStates(stateElements);
+        automataStates = getStates(stateElements);
         parseTransitions(stateElements);
     }
     
@@ -167,10 +161,10 @@ public class AutomataParser {
     private static List<IState> getStates(List<Element> stateElements)
         throws AutomataParserException
     {
-        List<IState> states = new ArrayList();
-        
         try{
-            for(Element e : stateElements){
+            List<IState> states = new ArrayList();
+        
+            stateElements.forEach(e -> {
                 String name = e.getAttribute(NAME_TAG);
                 Boolean isFinal = Boolean.parseBoolean(e.getAttribute(FINAL_TAG));
 
@@ -180,7 +174,7 @@ public class AutomataParser {
                 states.add(state);
                 transitionMap.put(name, transitions);
                 stateMap.put(name, state);            
-            }
+            });
             
             checkCorrectStates(states);
             
@@ -273,12 +267,14 @@ public class AutomataParser {
     private static Document getDocument(String filepath) 
         throws AutomataParserException
     {
-        Document document = null;
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        
         try{
+            Document document;
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            
             DocumentBuilder db = dbf.newDocumentBuilder();
             document = db.parse(filepath);
+            
+            return document;
         }
         catch(ParserConfigurationException | SAXException ex){
             throw new AutomataParserException(MISMATCHING_TAGS);
@@ -286,18 +282,16 @@ public class AutomataParser {
         catch(IOException ex){
             throw new AutomataParserException(UNABLE_TO_READ);
         }
-        
-        return document;
     }
     
     
     private static void resetStaticVariables(){
         stateMap = new HashMap();
         transitionMap = new HashMap();
-        states = new ArrayList();
+        automataStates = new ArrayList();
         startState = null;
         alphabet = null;
-        symbols = null;
+        symbolsInAlphabet = null;
     }
     
     
@@ -383,14 +377,14 @@ public class AutomataParser {
                 }
                 break;
             case UNUSED:
-                Set<Symbol> remainingSymbols = new HashSet(symbols);
-                for(ITransition i : transitions){
+                Set<Symbol> remainingSymbols = new HashSet(symbolsInAlphabet);
+                transitions.forEach(i -> {
                     remainingSymbols.remove(i.getSymbol());
-                }
-                for(Symbol i : remainingSymbols){
+                });
+                remainingSymbols.forEach(i -> {
                     IState target = stateMap.get(e.getAttribute(TARGET_TAG));
                     transitions.add(new Transition(target, i));
-                }
+                });
                 break;
         }
     }
