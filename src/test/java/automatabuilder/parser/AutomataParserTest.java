@@ -135,7 +135,7 @@ public class AutomataParserTest {
     
     @Test
     public void testUnableToReadDocument(){
-        assertTrue(testException("unable_to_read_document.xml", UNABLE_TO_READ));
+        assertTrue(testException("mismatching_tags.xml", MISMATCHING_TAGS));
     }
     
     

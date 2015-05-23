@@ -270,7 +270,10 @@ public class AutomataParser {
             DocumentBuilder db = dbf.newDocumentBuilder();
             document = db.parse(filepath);
         }
-        catch(ParserConfigurationException | SAXException | IOException ex){
+        catch(ParserConfigurationException | SAXException ex){
+            throw new AutomataParserException(MISMATCHING_TAGS);
+        }
+        catch(IOException ex){
             throw new AutomataParserException(UNABLE_TO_READ);
         }
         
