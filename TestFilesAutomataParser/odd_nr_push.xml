@@ -1,11 +1,11 @@
 <automata>
     <alphabet>
-        <symbol value="Push"></symbol>
+        <symbol value="Push"/>
     </alphabet>
     <state name="OFF" final="false">
-        <transition target="ON" symbol="Push"></transition>
+        <transition target="ON" symbol="Push"/>
     </state>
     <state name="ON" final="true">
-        <transition target="OFF" symbol="Push"></transition>
+        <transition target="OFF" symbol="Push"/>
     </state>
 </automata>

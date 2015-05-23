@@ -1,33 +1,33 @@
 <automata>
 	<alphabet>
-		<symbol value="NUMBERS"></symbol>
+		<symbol value="NUMBERS"/>
 	</alphabet>
 	<state name="q0" final="false">
-		<transition target="q1" symbol="1"></transition>
-		<transition target="q0" symbol="UNUSED"></transition>
+		<transition target="q1" symbol="1"/>
+		<transition target="q0" symbol="UNUSED"/>
 	</state>
 	<state name="q1" final="false">
-		<transition target="q2" symbol="3"></transition>
-		<transition target="q1" symbol="1"></transition>
-		<transition target="q0" symbol="UNUSED"></transition>
+		<transition target="q2" symbol="3"/>
+		<transition target="q1" symbol="1"/>
+		<transition target="q0" symbol="UNUSED"/>
 	</state>
 	<state name="q2" final="false">
-		<transition target="q3" symbol="3"></transition>
-		<transition target="q0" symbol="UNUSED"></transition>
+		<transition target="q3" symbol="3"/>
+		<transition target="q0" symbol="UNUSED"/>
 	</state>
 	<state name="q3" final="false">
-		<transition target="q4" symbol="7"></transition>
-		<transition target="q0" symbol="0"></transition>
-		<transition target="q0" symbol="1"></transition>
-		<transition target="q0" symbol="2"></transition>
-		<transition target="q0" symbol="3"></transition>
-		<transition target="q0" symbol="4"></transition>
-		<transition target="q0" symbol="5"></transition>
-		<transition target="q0" symbol="6"></transition>
-		<transition target="q0" symbol="8"></transition>
-		<transition target="q0" symbol="9"></transition>
+		<transition target="q4" symbol="7"/>
+		<transition target="q0" symbol="0"/>
+		<transition target="q0" symbol="1"/>
+		<transition target="q0" symbol="2"/>
+		<transition target="q0" symbol="3"/>
+		<transition target="q0" symbol="4"/>
+		<transition target="q0" symbol="5"/>
+		<transition target="q0" symbol="6"/>
+		<transition target="q0" symbol="8"/>
+		<transition target="q0" symbol="9"/>
 	</state>
 	<state name="q4" final="true">
-		<transition target="q4" symbol="NUMBERS"></transition>
+		<transition target="q4" symbol="NUMBERS"/>
 	</state>
 </automata>

@@ -1,7 +1,7 @@
 <automata>
     <alphabet>
-        <symbol value="a"></symbol>
-        <symbol value="b"></symbol>
-        <symbol value="c"></symbol>
+        <symbol value="a"/>
+        <symbol value="b"/>
+        <symbol value="c"/>
     </alphabet>
 </automata>
