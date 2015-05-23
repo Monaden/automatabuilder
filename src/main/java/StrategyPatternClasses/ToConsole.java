@@ -15,7 +15,7 @@ public class ToConsole implements IShowDFA {
 
     StringBuilder sb = new StringBuilder();
     StringBuilder whitespace    = new StringBuilder();
-    String whitespaceString = whitespace.toString();
+    String whitespaceString;
 
     @Override
     public void showTable(List<IState> stateList, IAlphabet alphabet){
@@ -24,6 +24,7 @@ public class ToConsole implements IShowDFA {
         for (int i = 0; i < maxNameLength/2; i++) {
             whitespace.append(' ');
         }
+        whitespaceString = whitespace.toString();
         firstRow(alphabet,maxNameLength);
         for (IState state : stateList) {
             addrow(state);
@@ -66,10 +67,12 @@ public class ToConsole implements IShowDFA {
     adds a row the StringBuilder with a state to the far left and
     the states transitions between two whitespace.
      */
-    private void addrow( IState state){
+    private void addrow(IState state){
         List<ITransition> transitionList = state.getTransitions();
         sb.append('[');
         sb.append(whitespaceString);
+        String extra = (state.isFinal()) ? "*" : "";
+        sb.append(extra);
         sb.append(state.getName());
         sb.append(whitespaceString);
         for (ITransition transition : transitionList) {

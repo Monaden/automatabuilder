@@ -6,6 +6,9 @@ import interfaces.IShowDFA;
 import interfaces.IState;
 import interfaces.ITransition;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 import org.junit.*;
@@ -39,12 +42,11 @@ public class ToConsoleTest {
     }
 
     @Test
-    public void printTable(){
+    public void printTable() throws IOException{
         IShowDFA outputter = new ToConsole();
         List<IState> stateList = new LinkedList<>();
         stateList.add(q0);
+        String expected = "[    | a | b ]\n[ q0 | a | b ]\n";
         outputter.showTable(stateList,alphabet);
-        String result = "[  |a|b]\n[q0|a|b]\n";
-
     }
 }
