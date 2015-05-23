@@ -40,13 +40,13 @@ public class AutomataParser {
     public static final int UNICODE_UPPER_CASE_Z_NR = 90;
     
     private static Map<String, IState> stateMap = new HashMap();
-    private static Map<String, List<ITransition>> transitionMap = new HashMap();
+    private static Map<List<ITransition>, List<Element>> transitionMap = new HashMap();
     private static List<IState> automataStates = new ArrayList();
     private static IState startState = null;
     private static IAlphabet alphabet = null;
     private static Set<Symbol> symbolsInAlphabet = null;
     
-    public static IAutomaton parseXmlFile(String filepath) 
+    public static IAutomaton parseXmlFile(String filepath)
         throws AutomataParserException
     {   
         try{
@@ -62,6 +62,15 @@ public class AutomataParser {
         catch(AutomataParserException ex){
             throw ex;
         }
+        catch(IllegalArgumentException ex){
+            throw new AutomataParserException(ex.getMessage());
+        }
+        catch(ParserConfigurationException | SAXException ex){
+            throw new AutomataParserException(MISMATCHING_TAGS);
+        }
+        catch(IOException ex){
+            throw new AutomataParserException(UNABLE_TO_READ);
+        }
         finally{
             resetStaticVariables();
         }
@@ -69,7 +78,6 @@ public class AutomataParser {
     
     
     private static void parseAlphabet(Element docElem) 
-        throws AutomataParserException
     {
         Element alphabetElement = getAlphabetElement(docElem);
         List<Element> symbolElements = getElements(alphabetElement, SYMBOL_TAG);
@@ -81,14 +89,12 @@ public class AutomataParser {
     
     
     private static Element getAlphabetElement(Element parent)
-        throws AutomataParserException
     {
         return getElements(parent, ALPHABET_TAG).get(0);
     }
     
     
     private static List<Element> getElements(Element parent, String tagName)
-        throws AutomataParserException
     {
         List<Element> elements = getElementsByTag(parent, tagName);
         checkForMissingElements(elements, tagName);
@@ -97,191 +103,96 @@ public class AutomataParser {
     }
     
     
-    private static void checkForMissingElements(List<Element> elements, String tagName)
-        throws AutomataParserException
-    {
-        if(tagName.equals(ALPHABET_TAG) ? elements.size() != 1 : elements.isEmpty()){
-            String errorMessage;
-            
-            switch(tagName){
-                case ALPHABET_TAG:
-                    errorMessage = NO_OR_MORE_APLHABET;
-                    break;
-                case SYMBOL_TAG:
-                    errorMessage = NO_SYMBOLS;
-                    break;
-                case STATE_TAG:
-                    errorMessage = NO_STATES;
-                    break;
-                case TRANSITION_TAG:
-                    errorMessage = NO_TRANSITIONS;
-                    break;
-                default:
-                    errorMessage = SHOULD_NOT_HAPPEN;
-            }
-            throw new AutomataParserException(errorMessage);
-        }
-    }
-    
-    
     private static Set<Symbol> getSymbols(List<Element> symbolElements)
-        throws AutomataParserException
     {
-        try{
-            Set<Symbol> symbols = new HashSet();
+        Set<Symbol> symbols = new HashSet();
         
-            symbolElements.forEach(e -> {
-                String value = e.getAttribute(VALUE_TAG);
+        symbolElements.forEach(e -> {
+            String value = e.getAttribute(VALUE_TAG);
                 
-                if(isSpecialSymbol(value)){
-                    specialSymbolFunctionality(value, symbols);
-                }
-                else{
-                    symbols.add(new Symbol(value));
-                }
-            });
+            if(isSpecialSymbol(value)){
+                specialSymbolFunctionality(value, symbols);
+            }
+            else{
+                symbols.add(new Symbol(value));
+            }
+        });
             
-            return symbols;
-        }
-        catch(IllegalArgumentException ex){
-            throw new AutomataParserException(INVALID_SYMBOL);
-        }
+        return symbols;
     }
         
     
     private static void parseStates(Element docElem)
-        throws AutomataParserException
     {
         List<Element> stateElements = getElements(docElem, STATE_TAG);
         automataStates = getStates(stateElements);
-        parseTransitions(stateElements);
+        parseTransitions();
     }
     
     
     private static List<IState> getStates(List<Element> stateElements)
-        throws AutomataParserException
     {
-        try{
-            List<IState> states = new ArrayList();
+        List<IState> states = new ArrayList();
         
-            stateElements.forEach(e -> {
-                String name = e.getAttribute(NAME_TAG);
-                Boolean isFinal = Boolean.parseBoolean(e.getAttribute(FINAL_TAG));
-
-                List<ITransition> transitions = new ArrayList();
-                IState state = new State(transitions, isFinal, name);
-
-                states.add(state);
-                transitionMap.put(name, transitions);
-                stateMap.put(name, state);            
-            });
-            
-            checkCorrectStates(states);
-            
-            startState = states.get(0);
-        
-            return states;
-        }
-        catch(IllegalArgumentException ex){
-            throw new AutomataParserException(INVALID_STATE);
-        }
-    }
-    
-    
-    private static void checkCorrectStates(List<IState> states)
-        throws AutomataParserException
-    {
-        Set<String> checkDuplicates = new HashSet();
-        for(IState i : states){
-            if(!checkDuplicates.add(i.getName())){
-                throw new AutomataParserException(STATES_SAME_NAME);
-            }
-        }
-    }
-    
-    
-    private static void parseTransitions(List<Element> stateElements)
-        throws AutomataParserException
-    {
-        for(Element e : stateElements){
+        stateElements.forEach(e -> {
             String name = e.getAttribute(NAME_TAG);
-            List<Element> transitionElements = getElements(e, TRANSITION_TAG);
-            addTransitions(transitionMap.get(name), transitionElements);            
-        }
+            Boolean isFinal = Boolean.parseBoolean(e.getAttribute(FINAL_TAG));
+
+            List<ITransition> transitions = new ArrayList();
+            IState state = new State(transitions, isFinal, name);
+
+            states.add(state);
+            transitionMap.put(transitions, getElements(e, TRANSITION_TAG));
+            stateMap.put(name, state);            
+        });
+            
+        checkCorrectStates(states);
+            
+        startState = states.get(0);
+        
+        return states;
     }
     
     
-    private static void addTransitions(List<ITransition> transitions, List<Element> transitionElements) 
-        throws AutomataParserException
-    {
-        try{
-            for(Element e : transitionElements){
+    private static void parseTransitions(){
+        transitionMap.forEach((transitions, transitionElements) -> {
+            transitionElements.forEach(e ->{
                 String value = e.getAttribute(SYMBOL_TAG);
-                
+
                 if(isSpecialSymbol(value)){
                     specialTransitionFunctionality(value, e, transitions);
                 }
                 else{
                     addTransition(value, transitions, e);
                 }
-            }
-            
+            });
+
             checkCorrectTransitions(transitions);
-        }
-        catch(IllegalArgumentException ex){
-            throw new AutomataParserException(INVALID_TRANSITION);
-        }
-    }
-    
-    
-    private static void checkCorrectTransitions(List<ITransition> transitions)
-        throws AutomataParserException
-    {
-        Set<Symbol> checkDuplicates = new HashSet();
-        for(ITransition i : transitions){
-            if(!checkDuplicates.add(i.getSymbol())){
-                throw new AutomataParserException(MULTIPLE_TRANSITIONS_FORM_SYMBOL);
-            }
-        }
-        
-        if(transitions.size() != alphabet.size()){
-            throw new AutomataParserException(MISSING_TRANSITION);
-        }
+        });
     }
     
     
     private static void addTransition(String value, List<ITransition> transitions, Element transitionElement)
-        throws AutomataParserException
     {
         Symbol symbol = new Symbol(value);
         IState target = stateMap.get(transitionElement.getAttribute(TARGET_TAG));
-        if(!alphabet.contains(symbol)){
-            throw new AutomataParserException(
-                TRANSITION_WITH_INVALID_SYMBOL
-            );
-        }
+        
+        checkSymbolInAlphabet(symbol);
+        
         transitions.add(new Transition(target, symbol));
     }
-       
     
-    private static Document getDocument(String filepath) 
-        throws AutomataParserException
+    
+    private static Document getDocument(String filepath)
+        throws ParserConfigurationException, SAXException, IOException
     {
-        try{
-            Document document;
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        Document document;
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            document = db.parse(filepath);
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        document = db.parse(filepath);
             
-            return document;
-        }
-        catch(ParserConfigurationException | SAXException ex){
-            throw new AutomataParserException(MISMATCHING_TAGS);
-        }
-        catch(IOException ex){
-            throw new AutomataParserException(UNABLE_TO_READ);
-        }
+        return document;
     }
     
     
@@ -296,7 +207,6 @@ public class AutomataParser {
     
     
     private static List<Element> getElementsByTag(Element parent, String tagName) 
-            throws AutomataParserException
     {
         List<Element> elements = new ArrayList();
         NodeList nodeList = parent.getElementsByTagName(tagName);
@@ -350,8 +260,8 @@ public class AutomataParser {
         }
     }
     
+    
     private static void specialTransitionFunctionality(String value, Element e, List<ITransition> transitions)
-        throws AutomataParserException
     {
         switch(value){
             case NUMBERS:
@@ -386,6 +296,67 @@ public class AutomataParser {
                     transitions.add(new Transition(target, i));
                 });
                 break;
+        }
+    }
+    
+    
+    private static void checkCorrectStates(List<IState> states)
+    {
+        Set<String> checkDuplicates = new HashSet();
+        for(IState i : states){
+            if(!checkDuplicates.add(i.getName())){
+                throw new AutomataParserException(STATES_SAME_NAME);
+            }
+        }
+    }
+    
+    
+    private static void checkForMissingElements(List<Element> elements, String tagName)
+    {
+        if(tagName.equals(ALPHABET_TAG) ? elements.size() != 1 : elements.isEmpty()){
+            String errorMessage;
+            
+            switch(tagName){
+                case ALPHABET_TAG:
+                    errorMessage = NO_OR_MORE_APLHABET;
+                    break;
+                case SYMBOL_TAG:
+                    errorMessage = NO_SYMBOLS;
+                    break;
+                case STATE_TAG:
+                    errorMessage = NO_STATES;
+                    break;
+                case TRANSITION_TAG:
+                    errorMessage = NO_TRANSITIONS;
+                    break;
+                default:
+                    errorMessage = SHOULD_NOT_HAPPEN;
+            }
+            throw new AutomataParserException(errorMessage);
+        }
+    }
+    
+    
+    private static void checkCorrectTransitions(List<ITransition> transitions)
+    {
+        Set<Symbol> checkDuplicates = new HashSet();
+        for(ITransition i : transitions){
+            if(!checkDuplicates.add(i.getSymbol())){
+                throw new AutomataParserException(MULTIPLE_TRANSITIONS_FORM_SYMBOL);
+            }
+        }
+        
+        if(transitions.size() != alphabet.size()){
+            throw new AutomataParserException(MISSING_TRANSITION);
+        }
+    }
+    
+    
+    private static void checkSymbolInAlphabet(Symbol symbol){
+        if(!alphabet.contains(symbol)){
+            throw new AutomataParserException(
+                TRANSITION_WITH_INVALID_SYMBOL
+            );
         }
     }
 }

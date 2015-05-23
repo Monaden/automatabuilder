@@ -4,13 +4,15 @@ import java.util.Objects;
 
 public class Symbol implements Comparable<Symbol> {
 
+    public static final String EXCEPTION_MESSAGE = "Symbol arguments invalid.";
+    
     protected String symbol;
 
     public static final Symbol Epsilon = new Symbol();
     
     public Symbol (String symbol) {
         if (symbol == null || "".equals(symbol)) {
-            throw new IllegalArgumentException("Symbol cannot be null or empty");
+            throw new IllegalArgumentException(EXCEPTION_MESSAGE);
         }
         this.symbol = symbol;
     }

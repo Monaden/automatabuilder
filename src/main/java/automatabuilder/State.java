@@ -8,13 +8,15 @@ import java.util.Objects;
 
 public class State implements IState {
 
+    public static final String EXCEPTION_MESSAGE = "State arguments invalid.";
+    
     private final List<ITransition> transitions;
     private final boolean isFinal;
     private final String name;
 
     public State (List<ITransition> transitions, boolean isFinal, String name) {
         if(transitions == null || name.isEmpty()){
-           throw new IllegalArgumentException("State arguments invalid.");
+           throw new IllegalArgumentException(EXCEPTION_MESSAGE);
         }
         this.transitions = transitions;
         this.isFinal     = isFinal;

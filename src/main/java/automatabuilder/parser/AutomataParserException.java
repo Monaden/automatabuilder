@@ -9,7 +9,7 @@ package automatabuilder.parser;
  *
  * @author Mikael
  */
-public class AutomataParserException extends Exception {
+public class AutomataParserException extends RuntimeException {
     
     public static final String PREFIX = "AutomataParserException: ";
     public static final String NO_OR_MORE_APLHABET = "No or more than one alphabet.";
@@ -17,9 +17,6 @@ public class AutomataParserException extends Exception {
     public static final String NO_STATES = "No states.";
     public static final String NO_TRANSITIONS = "No transitions from state.";
     public static final String SHOULD_NOT_HAPPEN = "This should never happen!";
-    public static final String INVALID_SYMBOL = "Invalid symbol.";
-    public static final String INVALID_STATE = "Invalid state.";
-    public static final String INVALID_TRANSITION = "Invalid transition.";
     public static final String TRANSITION_WITH_INVALID_SYMBOL = "Transition using symbol outside of alphabet.";
     public static final String MULTIPLE_TRANSITIONS_FORM_SYMBOL = "Multiple transitions from same symbol.";
     public static final String MISSING_TRANSITION = "Missing transitions.";

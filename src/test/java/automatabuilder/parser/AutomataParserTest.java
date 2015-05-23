@@ -5,6 +5,9 @@
  */
 package automatabuilder.parser;
 
+import automatabuilder.State;
+import automatabuilder.Symbol;
+import automatabuilder.Transition;
 import interfaces.IAutomaton;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -63,19 +66,19 @@ public class AutomataParserTest {
     
     @Test
     public void testInvalidState(){
-        assertTrue(testException("invalid_state.xml", INVALID_STATE));
+        assertTrue(testException("invalid_state.xml", State.EXCEPTION_MESSAGE));
     }
     
 
     @Test
     public void testInvalidSymbol(){
-        assertTrue(testException("invalid_symbol.xml", INVALID_SYMBOL));
+        assertTrue(testException("invalid_symbol.xml", Symbol.EXCEPTION_MESSAGE));
     }
     
     
     @Test
     public void testInvalidTransition(){
-        assertTrue(testException("invalid_transition.xml", INVALID_TRANSITION));
+        assertTrue(testException("invalid_transition.xml", Transition.EXCEPTION_MESSAGE));
     }
     
     
