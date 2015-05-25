@@ -5,11 +5,19 @@
  */
 package ui;
 
+import automatabuilder.DFA;
+import automatabuilder.State;
+import automatabuilder.Symbol;
+import automatabuilder.Transition;
 import interfaces.IAutomaton;
+import interfaces.ITransition;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 /**
  *
@@ -38,7 +46,18 @@ public class CLI {
                         System.err.println("No automata loaded.");
                     } else {
                         try {
-                            automata.test(input);
+                            if (automata.test(input)) {
+                                System.out.printf(
+                                    "'%s' was accepted by the automaton%n",
+                                    input
+                                );
+                            } else {
+                                System.out.printf(
+                                    "'%s' was not accepted by the automaton%n",
+                                        input
+                                );
+                            }
+                            
                         } catch (Exception e) {
                             System.err.println("Error: "+e.getMessage());
                         }
@@ -115,8 +134,21 @@ public class CLI {
 
     private void loadFile(File f) {
         
-        System.err.println("Not supported yet.");
+        System.err.println("Not supported yet. Empty Automaton loaded.");
         loadedFile = f;
+        //Mock load
+        
+//        List<ITransition> transitions = new ArrayList<>();
+//        
+//        Symbol a = new Symbol("a");
+//
+//        State q0 = new State(transitions, false, "q0");
+//        State q1 = new State(new ArrayList<>(), true, "q1");
+//
+//        Transition t1 = new Transition(q1, a);
+//        transitions.add(t1);
+        
+        this.automata = new DFA();
     }
 
     private void printAutomaton() {
