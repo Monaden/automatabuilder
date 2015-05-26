@@ -149,13 +149,7 @@ public class AutomataParserTest {
     
     
     @Test
-    public void testNUMBERSfunctionality(){
-        assertTrue(testParseAutomata("NUMBERS_functionality.xml"));
-    }
-    
-    
-    @Test
-    public void testALL_LETTERSfunctionality(){
-        assertTrue(testParseAutomata("ALL_LETTERS_functionality.xml"));
+    public void testRangeFunctionality(){
+        assertTrue(testParseAutomata("range_functionality.xml"));
     }
 }

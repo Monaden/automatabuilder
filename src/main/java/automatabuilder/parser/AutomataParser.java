@@ -26,21 +26,10 @@ public class AutomataParser {
     public static final String NAME_TAG = "name";
     public static final String FINAL_TAG = "final";
     
-    public static final String NUMBERS = "NUMBERS";
-    public static final String LOWER_CASE_LETTERS = "LOWER_CASE_LETTERS";
-    public static final String UPPER_CASE_LETTERS = "UPPER_CASE_LETTERS";
-    public static final String ALL_LETTERS = "ALL_LETTERS";
-    public static final String UNUSED = "UNUSED";
-    
-    public static final int UNICODE_ZERO_NR = 48;
-    public static final int UNICODE_NINE_NR = 57;
-    public static final int UNICODE_LOWER_CASE_A_NR = 97;
-    public static final int UNICODE_LOWER_CASE_Z_NR = 122;
-    public static final int UNICODE_UPPER_CASE_A_NR = 65;
-    public static final int UNICODE_UPPER_CASE_Z_NR = 90;
-    
+    public static final String OTHERS = "OTHERS";
+        
     private static Map<String, IState> stateMap = new HashMap();
-    private static Map<List<ITransition>, List<Element>> transitionMap = new HashMap();
+    private static Map<List<Element>, List<ITransition>> transitionMap = new HashMap();
     private static List<IState> automataStates = new ArrayList();
     private static IState startState = null;
     private static IAlphabet alphabet = null;
@@ -107,8 +96,9 @@ public class AutomataParser {
         symbolElements.forEach(e -> {
             String value = e.getAttribute(VALUE_TAG);
                 
-            if(isSpecialSymbol(value)){
-                specialSymbolFunctionality(value, symbols);
+            if(value.startsWith("[") && value.endsWith("]")){
+                addSymbolsFromRange(symbols, value);
+                //specialSymbolFunctionality(value, symbols);
             }
             else{
                 symbols.add(new Symbol(value));
@@ -139,7 +129,7 @@ public class AutomataParser {
             IState state = new State(transitions, isFinal, name);
 
             states.add(state);
-            transitionMap.put(transitions, getElements(e, TRANSITION_TAG));
+            transitionMap.put(getElements(e, TRANSITION_TAG), transitions);
             stateMap.put(name, state);            
         });
             
@@ -152,12 +142,24 @@ public class AutomataParser {
     
     
     private static void parseTransitions(){
-        transitionMap.forEach((transitions, transitionElements) -> {
+
+        transitionMap.forEach((transitionElements, transitions) -> {
             transitionElements.forEach(e ->{
                 String value = e.getAttribute(SYMBOL_TAG);
 
-                if(isSpecialSymbol(value)){
-                    specialTransitionFunctionality(value, e, transitions);
+                if(value.startsWith("[") && value.endsWith("]")){
+                    IState target = stateMap.get(e.getAttribute(TARGET_TAG));
+                    addTransitionsFromRange(transitions, target, value);
+                }
+                else if(value.equals(OTHERS)){
+                    Set<Symbol> remainingSymbols = new HashSet(symbolsInAlphabet);
+                    transitions.forEach(i -> {
+                        remainingSymbols.remove(i.getSymbol());
+                    });
+                    remainingSymbols.forEach(i -> {
+                        IState target = stateMap.get(e.getAttribute(TARGET_TAG));
+                        transitions.add(new Transition(target, i));
+                    });
                 }
                 else{
                     addTransition(value, transitions, e);
@@ -220,80 +222,37 @@ public class AutomataParser {
     }
     
     
-    private static boolean isSpecialSymbol(String value){
-        return value.equals(NUMBERS) || 
-               value.equals(LOWER_CASE_LETTERS) || 
-               value.equals(UPPER_CASE_LETTERS)|| 
-               value.equals(ALL_LETTERS) ||
-               value.equals(UNUSED);
-    }
-    
-    
-    private static void specialSymbolFunctionality(String value, Set<Symbol> symbols){
-        switch(value){
-            case NUMBERS:
-                for(int i = UNICODE_ZERO_NR; i <= UNICODE_NINE_NR; i++){
-                    symbols.add(new Symbol(String.valueOf((char) i)));
-                }  
-                break;
-            case LOWER_CASE_LETTERS:
-                for(int i = UNICODE_LOWER_CASE_A_NR; i <= UNICODE_LOWER_CASE_Z_NR; i++){
-                    symbols.add(new Symbol(String.valueOf((char) i)));
-                }
-                break;
-            case UPPER_CASE_LETTERS:
-                for(int i = UNICODE_UPPER_CASE_A_NR; i <= UNICODE_UPPER_CASE_Z_NR; i++){
-                    symbols.add(new Symbol(String.valueOf((char) i)));
-                }
-                break;
-            case ALL_LETTERS:
-                for(int i = UNICODE_LOWER_CASE_A_NR; i <= UNICODE_LOWER_CASE_Z_NR; i++){
-                    symbols.add(new Symbol(String.valueOf((char) i)));
-                }
-                for(int i = UNICODE_UPPER_CASE_A_NR; i <= UNICODE_UPPER_CASE_Z_NR; i++){
-                    symbols.add(new Symbol(String.valueOf((char) i)));
-                }
-                break;
+    private static void addSymbolsFromRange(Set<Symbol> symbols, String range){
+        int[] x = parseRange(range);
+
+        for(int i = x[0]; i <= x[1]; i++){
+            symbols.add(new Symbol(String.valueOf((char) i)));
         }
     }
     
     
-    private static void specialTransitionFunctionality(String value, Element e, List<ITransition> transitions)
-    {
-        switch(value){
-            case NUMBERS:
-                for(int i = UNICODE_ZERO_NR; i <= UNICODE_NINE_NR; i++){
-                    addTransition(String.valueOf((char) i), transitions, e);
-                }
-                break;
-            case LOWER_CASE_LETTERS:
-                for(int i = UNICODE_LOWER_CASE_A_NR; i <= UNICODE_LOWER_CASE_Z_NR; i++){
-                    addTransition(String.valueOf((char) i), transitions, e);
-                }
-            case UPPER_CASE_LETTERS:
-                for(int i = UNICODE_UPPER_CASE_A_NR; i <= UNICODE_UPPER_CASE_Z_NR; i++){
-                    addTransition(String.valueOf((char) i), transitions, e);
-                }
-                break;
-            case ALL_LETTERS:
-                for(int i = UNICODE_LOWER_CASE_A_NR; i <= UNICODE_LOWER_CASE_Z_NR; i++){
-                    addTransition(String.valueOf((char) i), transitions, e);
-                }
-                for(int i = UNICODE_UPPER_CASE_A_NR; i <= UNICODE_UPPER_CASE_Z_NR; i++){
-                    addTransition(String.valueOf((char) i), transitions, e);
-                }
-                break;
-            case UNUSED:
-                Set<Symbol> remainingSymbols = new HashSet(symbolsInAlphabet);
-                transitions.forEach(i -> {
-                    remainingSymbols.remove(i.getSymbol());
-                });
-                remainingSymbols.forEach(i -> {
-                    IState target = stateMap.get(e.getAttribute(TARGET_TAG));
-                    transitions.add(new Transition(target, i));
-                });
-                break;
+    public static void addTransitionsFromRange(List<ITransition> transitions, IState target, String range){
+        int[] x = parseRange(range);
+        
+        for(int i = x[0]; i <= x[1]; i++){
+            Symbol symbol = new Symbol(String.valueOf((char) i));
+            checkSymbolInAlphabet(symbol);
+            transitions.add(new Transition(target, symbol));
         }
+    }
+    
+    
+    private static int[] parseRange(String range){
+        
+        int[] x = range.chars().filter(
+            c -> {return !(c == 91 || c == 93 || c == 32 || c == 44);}
+        ).toArray();
+        
+        if(x.length != 2){
+            throw new IllegalArgumentException("Invalid Range");
+        }
+        
+        return x;
     }
     
     

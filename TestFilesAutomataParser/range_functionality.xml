@@ -1,6 +1,6 @@
 <automata>
 	<alphabet>
-		<symbol value="NUMBERS"/>
+		<symbol value="[0, 9]"/>
 	</alphabet>
 	<state name="q0" final="false">
 		<transition target="q1" symbol="1"/>
@@ -28,6 +28,6 @@
 		<transition target="q0" symbol="9"/>
 	</state>
 	<state name="q4" final="true">
-		<transition target="q4" symbol="NUMBERS"/>
+		<transition target="q4" symbol="[0, 9]"/>
 	</state>
 </automata>
