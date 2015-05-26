@@ -143,8 +143,8 @@ public class AutomataParserTest {
     
     
     @Test
-    public void testUNUSEDfunctionality(){
-        assertTrue(testParseAutomata("UNUSED_functionality.xml"));
+    public void testOthersFunctionality(){
+        assertTrue(testParseAutomata("others_functionality.xml"));
     }
     
     

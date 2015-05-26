@@ -20,6 +20,6 @@
         <transition target="q3" symbol="c"/>
     </state>
     <state name="q3" final="true">
-        <transition target="q3" symbol="UNUSED"/>
+        <transition target="q3" symbol="OTHERS"/>
     </state>
 </automata>
