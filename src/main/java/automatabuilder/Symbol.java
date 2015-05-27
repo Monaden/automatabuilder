@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Symbol implements Comparable<Symbol> {
 
-    protected String symbol;
+    final protected String symbol;
 
     public static final Symbol Epsilon = new Symbol();
     

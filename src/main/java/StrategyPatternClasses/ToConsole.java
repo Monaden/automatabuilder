@@ -13,9 +13,9 @@ import java.util.List;
  */
 public class ToConsole implements IShowDFA {
 
-    StringBuilder sb = new StringBuilder();
-    StringBuilder whitespace    = new StringBuilder();
-    String whitespaceString = whitespace.toString();
+    final StringBuilder sb = new StringBuilder();
+    final StringBuilder whitespace    = new StringBuilder();
+    final String whitespaceString = whitespace.toString();
 
     @Override
     public void showTable(List<IState> stateList, IAlphabet alphabet){
