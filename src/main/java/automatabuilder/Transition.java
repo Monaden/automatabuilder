@@ -5,9 +5,9 @@ import interfaces.ITransition;
 
 public class Transition implements ITransition {
 
-    protected IState target;
+    final protected IState target;
 
-    protected Symbol symbol;
+    final protected Symbol symbol;
 
     public Transition(IState target, Symbol symbol) {
         if (target == null || symbol == null) {

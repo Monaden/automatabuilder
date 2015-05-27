@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class Alphabet implements IAlphabet {
 
-    protected Set<Symbol> symbols;
+    final protected Set<Symbol> symbols;
     
     public Alphabet (Set<Symbol> symbols){
         if (symbols == null) {
