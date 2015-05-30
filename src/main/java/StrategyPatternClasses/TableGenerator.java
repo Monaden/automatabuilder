@@ -5,18 +5,28 @@ import interfaces.IAlphabet;
 import interfaces.IState;
 import interfaces.ITransition;
 
+import java.io.PrintStream;
 import java.util.List;
 
 /**
  * Created by oliv on 5/23/15.
  */
-class TableGenerator {
-    StringBuilder sb            = new StringBuilder();
-    StringBuilder whitespace    = new StringBuilder();
-    String whitespaceString;
+public class TableGenerator {
+    final StringBuilder sb            = new StringBuilder();
+    final StringBuilder whitespace    = new StringBuilder();
+    final String whitespaceString;
+    final List<IState> stateList;
+    final IAlphabet alphabet;
+    PrintStream printStream;
+    int maxNameLength;
 
-    public String getTable(List<IState> stateList, IAlphabet alphabet){
-        int maxNameLength = getNameLength(alphabet, stateList);
+    public TableGenerator (List<IState> stateList, IAlphabet alphabet, PrintStream printStream) {
+        //TODO maybe add tests for nulls
+        this.stateList = stateList;
+        this.alphabet = alphabet;
+        this.printStream = printStream;
+
+        maxNameLength = getNameLength();
         for (int i = 0; i < maxNameLength/2; i++) {
             whitespace.append(' ');
         }
@@ -27,14 +37,24 @@ class TableGenerator {
             }
         }
         whitespaceString = whitespace.toString();
-        firstRow(alphabet,maxNameLength);
-        for (IState state : stateList) {
-            addrow(state);
-        }
+    }
+
+    public void generate() {
+        printStream.print(getTable());
+    }
+
+    public void changedPrintStream(PrintStream printStream) {
+        //TODO maybe add tests for null
+        this.printStream = printStream;
+    }
+
+    private String getTable(){
+        firstRow();
+        stateList.forEach(state -> addrow(state));
         return sb.toString();
     }
 
-    private int getNameLength(IAlphabet alphabet, List<IState> stateList) {
+    private int getNameLength() {
         int cellLength = 0;
 
         for (Symbol symbol : alphabet) {
@@ -53,10 +73,10 @@ class TableGenerator {
         return cellLength;
     }
 
-    private void firstRow(IAlphabet alphabet,int extraWhitespace){
+    private void firstRow(){
         sb.append('[');
         sb.append(whitespaceString + whitespaceString);
-        for (int i = 0; i < extraWhitespace; i++) {
+        for (int i = 0; i < maxNameLength; i++) {
             sb.append(" ");
         }
         for (Symbol symbol : alphabet) {
