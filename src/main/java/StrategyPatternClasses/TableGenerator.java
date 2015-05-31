@@ -25,8 +25,8 @@ public class TableGenerator {
         this.stateList = stateList;
         this.alphabet = alphabet;
         this.printStream = printStream;
-
         maxNameLength = getNameLength();
+
         for (int i = 0; i < maxNameLength/2; i++) {
             whitespace.append(' ');
         }
@@ -38,12 +38,12 @@ public class TableGenerator {
         }
         whitespaceString = whitespace.toString();
     }
-
+        
     public void generate() {
         printStream.print(getTable());
     }
 
-    public void changedPrintStream(PrintStream printStream) {
+    public void changePrintStream(PrintStream printStream) {
         //TODO maybe add tests for null
         this.printStream = printStream;
     }
@@ -56,7 +56,6 @@ public class TableGenerator {
 
     private int getNameLength() {
         int cellLength = 0;
-
         for (Symbol symbol : alphabet) {
             int symbolLength = symbol.toString().length();
             if (symbolLength > cellLength) {
@@ -75,7 +74,8 @@ public class TableGenerator {
 
     private void firstRow(){
         sb.append('[');
-        sb.append(whitespaceString + whitespaceString);
+        sb.append(whitespaceString);
+        sb.append(whitespaceString);
         for (int i = 0; i < maxNameLength; i++) {
             sb.append(" ");
         }

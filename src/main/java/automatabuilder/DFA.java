@@ -7,13 +7,23 @@ import java.util.List;
 
 public class DFA implements IAutomaton {
 
-    protected List<IState> states;
+    final protected List<IState> states;
 
-    protected IAlphabet alphabet;
+    final protected IAlphabet alphabet;
 
-    protected IState startState;
+    final protected IState startState;
 
-    protected IShowDFA outputter;
+    final protected IShowDFA outputter;
+
+    public DFA(List<IState> states, IAlphabet alphabet, IState startState, IShowDFA outputter) {
+        //TODO should maybe test for null arguments?
+        this.states = states;
+        this.alphabet = alphabet;
+        this.startState = startState;
+        this.outputter = outputter;
+    }
+
+
 
     protected IState delta(IState q, Symbol s) {
         //TODO: Implement
