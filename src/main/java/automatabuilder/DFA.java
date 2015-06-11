@@ -38,7 +38,6 @@ public class DFA implements IAutomaton {
             return q;
         }
         IState next = delta(q,ax.head());
-        System.err.println(next.getName());
         return deltaHat(next, ax.tail());
     }
 
