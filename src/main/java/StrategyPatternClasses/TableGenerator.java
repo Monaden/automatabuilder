@@ -2,38 +2,60 @@ package StrategyPatternClasses;
 
 import automatabuilder.Symbol;
 import interfaces.IAlphabet;
-import interfaces.IShowDFA;
 import interfaces.IState;
 import interfaces.ITransition;
 
+import java.io.PrintStream;
 import java.util.List;
 
 /**
- * Created by oliv on 5/20/15.
+ * Created by oliv on 5/23/15.
  */
-public class ToConsole implements IShowDFA {
+public class TableGenerator {
+    final StringBuilder sb            = new StringBuilder();
+    final StringBuilder whitespace    = new StringBuilder();
+    final String whitespaceString;
+    final List<IState> stateList;
+    final IAlphabet alphabet;
+    PrintStream printStream;
+    int maxNameLength;
 
-    StringBuilder sb = new StringBuilder();
-    StringBuilder whitespace    = new StringBuilder();
-    String whitespaceString = whitespace.toString();
-
-    @Override
-    public void showTable(List<IState> stateList, IAlphabet alphabet){
-        int maxNameLength = getNameLength(alphabet, stateList);
+    public TableGenerator (List<IState> stateList, IAlphabet alphabet, PrintStream printStream) {
+        //TODO maybe add tests for nulls
+        this.stateList = stateList;
+        this.alphabet = alphabet;
+        this.printStream = printStream;
+        maxNameLength = getNameLength();
 
         for (int i = 0; i < maxNameLength/2; i++) {
             whitespace.append(' ');
         }
-        firstRow(alphabet,maxNameLength);
         for (IState state : stateList) {
-            addrow(state);
+            if (state.isFinal()) {
+                maxNameLength++;
+                break;
+            }
         }
-        System.out.println(sb);
+        whitespaceString = whitespace.toString();
+    }
+        
+    public void generate() {
+        printStream.print(getTable());
     }
 
-    private int getNameLength(IAlphabet alphabet, List<IState> stateList) {
-        int cellLength = 0;
+    public void changePrintStream(PrintStream printStream) {
+        //TODO maybe add tests for null
+        this.printStream = printStream;
+    }
 
+    private String getTable(){
+        firstRow();
+        stateList.forEach(state -> addrow(state));
+        return sb.toString();
+    }
+
+    private int getNameLength() {
+        int cellLength = 0;
         for (Symbol symbol : alphabet) {
             int symbolLength = symbol.toString().length();
             if (symbolLength > cellLength) {
@@ -50,10 +72,11 @@ public class ToConsole implements IShowDFA {
         return cellLength;
     }
 
-    private void firstRow(IAlphabet alphabet,int extraWhitespace){
+    private void firstRow(){
         sb.append('[');
-        sb.append(whitespaceString + whitespaceString);
-        for (int i = 0; i < extraWhitespace; i++) {
+        sb.append(whitespaceString);
+        sb.append(whitespaceString);
+        for (int i = 0; i < maxNameLength; i++) {
             sb.append(" ");
         }
         for (Symbol symbol : alphabet) {
@@ -66,10 +89,12 @@ public class ToConsole implements IShowDFA {
     adds a row the StringBuilder with a state to the far left and
     the states transitions between two whitespace.
      */
-    private void addrow( IState state){
+    private void addrow(IState state){
         List<ITransition> transitionList = state.getTransitions();
         sb.append('[');
         sb.append(whitespaceString);
+        String finalMark = (state.isFinal()) ? "*" : "";
+        sb.append(finalMark);
         sb.append(state.getName());
         sb.append(whitespaceString);
         for (ITransition transition : transitionList) {

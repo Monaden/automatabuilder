@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class Alphabet implements IAlphabet {
 
-    protected Set<Symbol> symbols;
+    final protected Set<Symbol> symbols;
     
     public Alphabet (Set<Symbol> symbols){
         if (symbols == null) {
@@ -66,6 +66,15 @@ public class Alphabet implements IAlphabet {
     }
 
     @Override
+    public boolean contains(Symbol symbol) {
+        return symbols.contains(symbol);
+    }
+
+    @Override
+    public int size() {
+        return symbols.size();
+    }
+
     public Iterator<Symbol> iterator() {
         return symbols.iterator();
     }
