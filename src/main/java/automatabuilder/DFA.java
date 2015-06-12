@@ -24,23 +24,6 @@ public class DFA implements IAutomaton {
         this.outputter = outputter;
     }
 
-
-    
-    public DFA(List<IState> states, IAlphabet alphabet, IState startState){
-        this.states = states;
-        this.alphabet = alphabet;
-        this.startState = startState;
-	this.outputter = null;
-    }
-    
-
-    public DFA(List<IState> states, IAlphabet alphabet, IState startState, IShowDFA outputter) {
-        this.states = states;
-        this.alphabet = alphabet;
-        this.startState = startState;
-        this.outputter = outputter;
-    }
-
     public DFA(List<IState> states, IAlphabet alphabet, IState startState) {
         this(states, alphabet, startState, null);
     }
