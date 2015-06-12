@@ -66,6 +66,15 @@ public class Alphabet implements IAlphabet {
     }
 
     @Override
+    public boolean contains(Symbol symbol) {
+        return symbols.contains(symbol);
+    }
+
+    @Override
+    public int size() {
+        return symbols.size();
+    }
+
     public Iterator<Symbol> iterator() {
         return symbols.iterator();
     }

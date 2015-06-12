@@ -24,6 +24,14 @@ public class DFA implements IAutomaton {
     }
 
 
+    
+    public DFA(List<IState> states, IAlphabet alphabet, IState startState){
+        this.states = states;
+        this.alphabet = alphabet;
+        this.startState = startState;
+	this.outputter = null;
+    }
+    
 
     protected IState delta(IState q, Symbol s) {
         //TODO: Implement
