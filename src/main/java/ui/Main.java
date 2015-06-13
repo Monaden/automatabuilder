@@ -34,7 +34,11 @@ import java.io.File;
  */
 public class Main {
     public static void main(String[] args) {
-        CLI cli = new CLI(new File(""));
+        File f = null;
+        if (args.length > 0) {
+            f = new File(args[0]);
+        }
+        CLI cli = new CLI(f);
         cli.start();
     }
 }
