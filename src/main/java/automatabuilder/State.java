@@ -2,23 +2,32 @@ package automatabuilder;
 
 import interfaces.IState;
 import interfaces.ITransition;
+
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
 
 public class State implements IState {
 
+    public static final String EXCEPTION_MESSAGE = "State arguments invalid.";
+    
     private final List<ITransition> transitions;
     private final boolean isFinal;
     private final String name;
 
     public State (List<ITransition> transitions, boolean isFinal, String name) {
         if(transitions == null || name.isEmpty()){
-           throw new IllegalArgumentException("State arguments invalid.");
+           throw new IllegalArgumentException(EXCEPTION_MESSAGE);
         }
         this.transitions = transitions;
         this.isFinal     = isFinal;
         this.name        = name;
+    }
+
+    @Override
+    public List<ITransition> getTransitions() {
+        return new LinkedList<>(transitions);
     }
 
     @Override
@@ -33,8 +42,11 @@ public class State implements IState {
     
     @Override
     public IState transition(Symbol a) {
+        if (a.equals(Symbol.Epsilon)) {
+            return this;
+        }
         for (ITransition t : transitions) {
-            if (t.getSymbol() == a) {
+            if (t.getSymbol().equals(a)) {
                 return t.getTarget();
             }
         }

@@ -1,5 +1,7 @@
 package interfaces;
 
+import exceptions.InvalidWordException;
+
 public interface IAutomaton {
-  public Boolean test(String word);
+  public boolean test(String word) throws InvalidWordException;
 }
