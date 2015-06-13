@@ -1,5 +1,6 @@
 package automatabuilder;
 
+import exceptions.InvalidWordException;
 import interfaces.*;
 
 import java.util.List;
@@ -23,30 +24,37 @@ public class DFA implements IAutomaton {
         this.outputter = outputter;
     }
 
-
-    
-    public DFA(List<IState> states, IAlphabet alphabet, IState startState){
-        this.states = states;
-        this.alphabet = alphabet;
-        this.startState = startState;
-	this.outputter = null;
+    public DFA(List<IState> states, IAlphabet alphabet, IState startState) {
+        this(states, alphabet, startState, null);
     }
-    
 
+    
+    
     protected IState delta(IState q, Symbol s) {
-        //TODO: Implement
-        return null;
+        return q.transition(s);
     }
 
     protected IState deltaHat(IState q, IWord ax) {
-        //TODO: Implement
-        return null;
+        if (ax == null || ax.equals(Word.Empty)) {
+            return q;
+        }
+        IState next = delta(q,ax.head());
+        return deltaHat(next, ax.tail());
     }
 
     @Override
-    public Boolean test(String word) {
-        //TODO: Implement
-        return null;
+    public boolean test(String word) throws InvalidWordException {
+        IWord w = new Word(word);
+        
+        if (!alphabet.isValid(w)) {
+            throw new InvalidWordException(
+                String.format("The word '%s' is invalid", word)
+            );
+        }
+        
+        IState end = deltaHat(startState, w);
+        
+        return end.isFinal();
     }
 
 }

@@ -42,8 +42,11 @@ public class State implements IState {
     
     @Override
     public IState transition(Symbol a) {
+        if (a.equals(Symbol.Epsilon)) {
+            return this;
+        }
         for (ITransition t : transitions) {
-            if (t.getSymbol() == a) {
+            if (t.getSymbol().equals(a)) {
                 return t.getTarget();
             }
         }
