@@ -24,8 +24,6 @@
  */
 package ui;
 
-import interfaces.IAutomaton;
-import automatabuilder.DFA;
 import java.io.File;
 
 /**

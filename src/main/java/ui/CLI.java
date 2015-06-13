@@ -5,12 +5,19 @@
  */
 package ui;
 
+import automatabuilder.DFA;
+import automatabuilder.State;
+import automatabuilder.Symbol;
+import automatabuilder.Transition;
 import interfaces.IAutomaton;
 import automatabuilder.parser.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 /**
  *
@@ -43,11 +50,16 @@ public class CLI {
                     } else {
                         try {
                             if (automata.test(input)) {
-                                System.out.println("The word was accepted.");
+                                System.out.printf(
+                                    "'%s' was accepted by the automaton%n",
+                                    input
+                                );
                             } else {
-                                System.out.println("The word was rejected.");
+                                System.out.printf(
+                                    "'%s' was not accepted by the automaton%n",
+                                        input
+                                );
                             }
-                                
                             
                         } catch (Exception e) {
                             System.err.println("Error: "+e.getMessage());
