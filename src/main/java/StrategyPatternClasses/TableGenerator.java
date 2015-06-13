@@ -2,6 +2,7 @@ package StrategyPatternClasses;
 
 import automatabuilder.Symbol;
 import interfaces.IAlphabet;
+import interfaces.IAutomaton;
 import interfaces.IState;
 import interfaces.ITransition;
 
@@ -20,10 +21,10 @@ public class TableGenerator {
     PrintStream printStream;
     int maxNameLength;
 
-    public TableGenerator (List<IState> stateList, IAlphabet alphabet, PrintStream printStream) {
+    public TableGenerator (IAutomaton automaton, PrintStream printStream) {
         //TODO maybe add tests for nulls
-        this.stateList = stateList;
-        this.alphabet = alphabet;
+        this.stateList = automaton.getStates();
+        this.alphabet = automaton.getAlphabet();
         this.printStream = printStream;
         maxNameLength = getNameLength();
 

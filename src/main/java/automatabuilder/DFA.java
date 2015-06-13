@@ -28,8 +28,16 @@ public class DFA implements IAutomaton {
         this(states, alphabet, startState, null);
     }
 
-    
-    
+    @Override
+    public List<IState> getStates() {
+        return states;
+    }
+
+    @Override
+    public IAlphabet getAlphabet() {
+        return alphabet;
+    }
+
     protected IState delta(IState q, Symbol s) {
         return q.transition(s);
     }
