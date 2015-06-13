@@ -6,6 +6,7 @@
 package ui;
 
 import interfaces.IAutomaton;
+import automatabuilder.parser.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +22,9 @@ public class CLI {
     
     
     public CLI(File f) {
+        if (f != null) {
+            loadFile(f);
+        }
         this.loadedFile = f;
     }
     
@@ -38,7 +42,13 @@ public class CLI {
                         System.err.println("No automata loaded.");
                     } else {
                         try {
-                            automata.test(input);
+                            if (automata.test(input)) {
+                                System.out.println("The word was accepted.");
+                            } else {
+                                System.out.println("The word was rejected.");
+                            }
+                                
+                            
                         } catch (Exception e) {
                             System.err.println("Error: "+e.getMessage());
                         }
@@ -114,14 +124,18 @@ public class CLI {
     }
 
     private void loadFile(File f) {
-        
-        System.err.println("Not supported yet.");
-        loadedFile = f;
+        try {
+            this.automata = AutomataParser.parseXmlFile(f.getAbsolutePath());
+            System.out.printf("Loaded file %s %n",f.getAbsolutePath());
+            loadedFile = f;
+            
+        } catch (AutomataParserException ape) {
+            System.err.println("Error loading file: "+ape.getMessage());
+        }
     }
 
     private void printAutomaton() {
-        System.err.println("Not supported yet.");
-        //TODO implement print transition table
+        this.automata.printTo(System.out);
     }
     
     
