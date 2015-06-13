@@ -1,0 +1,14 @@
+<automata>
+    <alphabet>
+        <symbol value="0"/>
+        <symbol value="1"/>
+    </alphabet>
+    <state name="q0" final="false">
+        <transition target="q0" symbol="0"/>
+        <transition target="q1" symbol="1"/>
+    </state>
+    <state name="q1" final="true">
+        <transition target="q1" symbol="0"/>
+        <transition target="q0" symbol="1"/>
+    </state>
+</automata>
