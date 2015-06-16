@@ -1,6 +1,7 @@
 package automatabuilder;
 
 import interfaces.IWord;
+import java.util.Objects;
 import java.lang.Iterable;
 import java.util.Iterator;
 
@@ -124,4 +125,29 @@ public class Word implements IWord, Iterable<Symbol> {
             }
         };
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 29 * hash + Objects.hashCode(this.head);
+        hash = 29 * hash + Objects.hashCode(this.tail);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Word other = (Word) obj;
+        if (!Objects.equals(this.head, other.head)) {
+            return false;
+        }
+        return Objects.equals(this.tail, other.tail);
+    }
+    
+    
 }
