@@ -1,9 +1,6 @@
 package automatabuilder;
 import StrategyPatternClasses.TableGenerator;
-import interfaces.IAlphabet;
-import interfaces.IShowDFA;
-import interfaces.IState;
-import interfaces.ITransition;
+import interfaces.*;
 
 import java.io.*;
 import java.util.*;
@@ -38,7 +35,8 @@ public class OutputTest {
     public void printTable() {
         List<IState> stateList = new LinkedList<>();
         stateList.add(q0);
-        TableGenerator tb = new TableGenerator(stateList,alphabet,System.out);
+        IAutomaton automaton = new DFA(stateList,alphabet,q0);
+        TableGenerator tb = new TableGenerator(automaton,System.out);
         String result = "[     | a | b ]\n[ *q0 | a | b ]\n";
         File file = new File("./testfile");
         try {
