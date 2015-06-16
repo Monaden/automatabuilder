@@ -2,8 +2,11 @@ package automatabuilder;
 
 import interfaces.IWord;
 import java.util.Objects;
+import java.lang.Iterable;
+import java.util.Iterator;
 
-public class Word implements IWord {
+public class Word implements IWord, Iterable<Symbol> {
+
     
     /**
      * The first symbol of the word.
@@ -94,6 +97,33 @@ public class Word implements IWord {
             return new Word(tail);
         }
         return null;
+    }
+    
+    
+    @Override
+    public Iterator<Symbol> iterator() {
+        return new Iterator<Symbol>() {
+            Symbol currentHead = head;
+            IWord currentTail = tail;
+
+            @Override
+            public boolean hasNext() {
+                return !head.equals("");
+            }
+
+            @Override
+            public Symbol next() {
+                Symbol next = currentHead;
+                currentHead = currentTail.head();
+                currentTail = currentTail.tail();
+                return next;
+            }
+
+            @Override
+            public void remove(){
+                throw new UnsupportedOperationException("remove not supported for Word");
+            }
+        };
     }
 
     @Override
