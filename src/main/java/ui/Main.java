@@ -22,7 +22,9 @@
  * SOFTWARE.
  *
  */
-package automatabuilder;
+package ui;
+
+import java.io.File;
 
 /**
  * Main class for running the application
@@ -30,6 +32,11 @@ package automatabuilder;
  */
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello World");
+        File f = null;
+        if (args.length > 0) {
+            f = new File(args[0]);
+        }
+        CLI cli = new CLI(f);
+        cli.start();
     }
 }

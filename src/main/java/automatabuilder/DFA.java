@@ -1,7 +1,9 @@
 package automatabuilder;
 
+import StrategyPatternClasses.TableGenerator;
 import exceptions.InvalidWordException;
 import interfaces.*;
+import java.io.PrintStream;
 
 import java.util.List;
 
@@ -55,6 +57,12 @@ public class DFA implements IAutomaton {
         IState end = deltaHat(startState, w);
         
         return end.isFinal();
+    }
+    
+    @Override
+    public void printTo(PrintStream ps) {
+        TableGenerator tg = new TableGenerator(this.states, this.alphabet, ps);
+        tg.generate();
     }
 
 }

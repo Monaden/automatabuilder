@@ -26,6 +26,7 @@ public class AutomataParserException extends RuntimeException {
     public final String exceptionMessage;
     
     AutomataParserException(String exceptionMessage){
+        super(exceptionMessage);
         this.exceptionMessage = exceptionMessage;
     }
     
